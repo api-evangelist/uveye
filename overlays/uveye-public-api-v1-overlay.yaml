@@ -1,0 +1,72 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for UVeye Public API v1
+  version: 1.0.0
+extends: openapi/uveye-public-api-v1-openapi.yml
+x-generated: '2026-08-02'
+x-method: generated
+x-source: >-
+  Captures the API Evangelist enhancements layered on top of the contract UVeye publishes as a
+  Postman collection at https://api.v1.uveye.dev/. The base OpenAPI in openapi/ is itself derived
+  from that collection; this overlay records the provenance, artifact cross-links and runtime
+  semantics that the enrichment pass established.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provenance:
+      derived_from: postman/uveye-public-api-v1-postman-collection.json
+      provider_published_format: Postman Collection v2.0.0
+      provider_published_url: https://api.v1.uveye.dev/
+      documentation_version: '1.2'
+      documentation_version_date: '2026-07-06'
+    x-apievangelist-artifacts:
+      authentication: authentication/uveye-authentication.yml
+      conventions: conventions/uveye-conventions.yml
+      errors: errors/uveye-problem-types.yml
+      lifecycle: lifecycle/uveye-lifecycle.yml
+      changelog: changelog/uveye-changelog.yml
+      rate_limits: rate-limits/uveye-rate-limits.yml
+      sandbox: sandbox/uveye-sandbox.yml
+      webhooks: asyncapi/uveye-merchandise-webhooks.yml
+      data_model: data-model/uveye-data-model.yml
+      conformance: conformance/uveye-conformance.yml
+      agentic_access: agentic-access/uveye-agentic-access.yml
+      skills: skills/_index.yml
+- target: $.info
+  update:
+    x-apievangelist-semantics:
+      shape: RPC over POST - identifiers travel in the request body, not the path
+      method_policy: non-POST on a POST endpoint returns 405 "unknown method, please use POST"
+      pagination: none - listLatestInspections is windowed by days, hours or count
+      idempotency: >-
+        No Idempotency-Key header. Merchandise inventory submission is content-hash deduplicated and
+        safe to repeat; the outbound webhook carries a delivery_id idempotency key in its signed JWT.
+      error_format: proprietary status + message string (not RFC 9457)
+- target: $.paths./public-link.post
+  update:
+    x-apievangelist-expiry:
+      resource: public inspection link
+      ttl_days: 30
+      surfaced_as: expirationDate
+- target: $.paths./image.get
+  update:
+    x-apievangelist-expiry:
+      resource: signed image URL
+      ttl_hours: 1
+      remediation: re-request the inspection to obtain fresh image URLs
+- target: $.paths./merchandise/inventory/vehicles.post
+  update:
+    x-apievangelist-batch:
+      max_items: 100
+      over_limit_status: 413
+      recommended_cadence: resubmit the full active inventory roughly every 4 hours
+      dedup: content hash - unchanged vehicles are no-ops
+      silent_exclusion: >-
+        A malformed or incomplete VIN is excluded from the batch and never produces a webhook; the
+        202 response carries no per-VIN validation.
+- target: $.paths./merchandise/inventory/sold.post
+  update:
+    x-apievangelist-batch:
+      max_items: 100
+      over_limit_status: 413
+      note: v1 does not auto-detect sold vehicles from absence in a resubmitted inventory

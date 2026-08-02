@@ -1,0 +1,52 @@
+generated: '2026-08-02'
+method: searched
+source: https://api.v1.uveye.dev/ (Changelog section of the UVeye Public API v1 collection description)
+scheme: documentation-versioned (vMAJOR.MINOR with an ISO date), tracked separately from the API's
+  uri-path version (v1)
+current_version: '1.2'
+current_version_date: '2026-07-06'
+api_version: v1
+location: published inline in the collection description at https://api.v1.uveye.dev/ - there is no
+  standalone dated changelog page or feed
+entries:
+- version: '1.2'
+  date: '2026-07-06'
+  breaking: false
+  highlights:
+  - Added the Merchandise folder - Submit inventory, Mark vehicles sold, and the outbound webhook
+    payload contract.
+  - Postman is now the single source of truth for the UVeye API, unifying inspection and merchandise
+    for customers.
+  - 'Merchandise endpoints authenticate with Authorization: Bearer, distinct from uveye-api-key.'
+  additions:
+  - POST /merchandise/inventory/vehicles
+  - POST /merchandise/inventory/sold
+  - merchandise images-ready webhook contract
+- version: '1.1'
+  date: '2026-06-30'
+  breaking: false
+  highlights:
+  - 'Inspection Details: added uniqueId as a 4th lookup option.'
+  - 'Latest Inspections: added vin as a search filter.'
+  - 'Quote Data by Inspection ID: corrected the request body and added the full response schema.'
+  - 'Public Link: documented the 30-day expiry.'
+  - Removed the Inspection Feedback request - the endpoint is not available.
+  additions:
+  - 'Inspection Details response fields: isDriveable, spareTireInfo, keyType, merchandiseVehicleData'
+  - 'Tire fields: treadImageWithGrooves, croppedWallImage, croppedTreadImage, isMismatchTire'
+  - 'Detection fields: croppedImage plus millimeter/inch dimensions'
+  - 'Atlas fields: bodyPartDisplayName, bodyPartCustomerMappingId, damageTypeCustomerMappingId'
+  - 'Apollo apolloInformation: interiorColor, interiorType, hasHeadrests, hasThirdRowSeating, isBioHazard'
+  - 'Latest Inspections: merchandiseVehicleData'
+  - 'image: completed documentation (keys come embedded in other endpoints image URLs; URLs expire after 1 hour)'
+  - 'Inspection shared: documented request/response schema'
+  removals:
+  - Inspection Feedback request (endpoint not available)
+  - 'Apollo apolloInformation: obsolete soundRecording and dashboardAlertLights'
+  fixes:
+  - Corrected isAllSeasonPresent / isSpeedAndLoadNormal spelling.
+  - Fixed an invalid Public Link example value.
+notes: >-
+  UVeye's changelog documents documentation and schema changes rather than API version transitions;
+  no v2 and no deprecation window is announced. The one removal on record (Inspection Feedback) was
+  documented after the fact rather than announced with a sunset date.

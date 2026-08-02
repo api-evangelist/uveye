@@ -1,0 +1,73 @@
+generated: '2026-08-02'
+method: searched
+source: https://api.v1.uveye.dev/ (API documentation), https://trust.uveye.com/ (SafeBase trust
+  center), openapi/uveye-public-api-v1-openapi.yml
+summary: >-
+  UVeye holds published organisational security certifications (ISO/IEC 27001:2022 and SOC 2 Type 2,
+  evidenced on its SafeBase trust center) but asserts no API-level or industry data standard. The
+  Public API v1 is a proprietary RPC-over-POST JSON contract: no OAuth, no OIDC, no RFC 9457 problem
+  details, no JSON:API, no standard pagination and no published AsyncAPI or OpenAPI of its own.
+standards:
+- id: iso-27001
+  name: ISO/IEC 27001:2022
+  conforms: true
+  scope: organisational information security management
+  evidence: named certification listed on https://trust.uveye.com/ (SafeBase by Drata)
+- id: soc2-type2
+  name: SOC 2 Type 2
+  conforms: true
+  scope: organisational security controls; report available under NDA via the trust center
+  evidence: named report listed on https://trust.uveye.com/
+- id: penetration-testing
+  name: Third-party penetration testing
+  conforms: true
+  evidence: pentest report listed as an available document on https://trust.uveye.com/
+- id: ccpa
+  name: California Consumer Privacy Act
+  conforms: true
+  scope: privacy program disclosure
+  evidence: referenced in UVeye's privacy materials via https://uveye.com/privacy-policy/ and the trust center
+- id: oauth2
+  conforms: false
+  evidence: no oauth2 securityScheme in the contract; authentication is a uveye-api-key header plus a
+    separate merchandise bearer credential
+- id: oidc
+  conforms: false
+  evidence: no /.well-known/openid-configuration on any host (404 on all probed hosts)
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: errors are a status code plus a plain message string; no application/problem+json anywhere
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on every host
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: no Sunset or Deprecation header support documented; no deprecation policy published
+- id: json-api
+  conforms: false
+  evidence: responses are bare JSON objects with no data/attributes envelope
+- id: openapi
+  conforms: partial
+  evidence: >-
+    UVeye publishes a Postman Collection v2.0.0, not an OpenAPI document. The OpenAPI 3.1.0 in
+    openapi/ is derived by API Evangelist from that collection and is not published by UVeye.
+- id: asyncapi
+  conforms: false
+  evidence: one documented outbound webhook, no AsyncAPI document published
+- id: cursor-pagination
+  conforms: false
+  evidence: listLatestInspections is windowed (days/hours/count), with no cursor, offset or next token
+- id: idempotency-key-header
+  conforms: partial
+  evidence: >-
+    No Idempotency-Key request header. Idempotency semantics exist on the merchandise surface only -
+    content-hash dedup on inventory resubmission, and a delivery_id in the signed webhook JWT.
+- id: fhir-r4
+  conforms: false
+- id: scim2
+  conforms: false
+- id: odata
+  conforms: false
+subprocessors:
+  source: https://trust.uveye.com/
+  named: [Algolia, Amazon Web Services, Google]

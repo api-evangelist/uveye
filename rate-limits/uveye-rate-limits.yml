@@ -1,0 +1,39 @@
+generated: '2026-08-02'
+method: searched
+source: https://api.v1.uveye.dev/ (UVeye Public API v1, Merchandise folder, documentation v1.2)
+summary: >-
+  UVeye publishes no request-rate quota and returns no rate-limit response headers. The only
+  documented, enforced limit is a batch-size cap on the Merchandise endpoints, plus a recommended
+  resubmission cadence for full inventory. Recorded as observed - absence of a published quota is
+  real data, not an omission.
+headers_published: false
+rate_limit_headers: []
+retry_after: not published
+limits:
+- name: merchandise batch size
+  limit_count: 100
+  limit_unit: vehicles per request
+  applies_to:
+  - openapi/uveye-public-api-v1-openapi.yml#submitMerchandiseInventory
+  - openapi/uveye-public-api-v1-openapi.yml#markMerchandiseVehiclesSold
+  enforcement: HTTP 413 when exceeded
+  source: https://api.v1.uveye.dev/
+- name: recommended inventory resubmission cadence
+  limit_count: 1
+  limit_unit: full inventory resubmission per 4 hours (recommended, not enforced)
+  applies_to:
+  - openapi/uveye-public-api-v1-openapi.yml#submitMerchandiseInventory
+  enforcement: none - guidance only; unchanged vehicles are deduplicated by content hash
+  source: https://api.v1.uveye.dev/
+- name: merchandise webhook delivery attempts
+  limit_count: 6
+  limit_unit: delivery attempts per event (1 initial + up to 5 retries)
+  applies_to: asyncapi/uveye-merchandise-webhooks.yml#merchandiseImagesReady
+  enforcement: UVeye stops retrying after 6 attempts; all attempts share one delivery_id
+  source: https://api.v1.uveye.dev/
+resource_expiry:
+- {resource: public inspection link, ttl_days: 30}
+- {resource: signed image URL, ttl_hours: 1}
+notes: >-
+  No per-key request quota, no burst limit and no 429 status appears anywhere in the published
+  documentation or in any endpoint's "Possible response statuses" table.

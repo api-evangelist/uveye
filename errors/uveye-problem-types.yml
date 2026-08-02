@@ -1,0 +1,116 @@
+generated: '2026-08-02'
+method: searched
+source: https://api.v1.uveye.dev/ ("Possible response statuses" tables per endpoint, documentation
+  v1.2) enriched against openapi/uveye-public-api-v1-openapi.yml
+format: proprietary
+envelope:
+  description: >-
+    UVeye does not use RFC 9457 problem+json. Errors are returned as the documented HTTP status code
+    with a short human-readable message string; the documentation publishes the exact message text
+    per status per endpoint. There is no machine-readable error code field, no error type URI and no
+    problem+json media type anywhere in the published contract.
+  rfc9457: false
+  media_type: application/json
+problems:
+- status: 400
+  title: Request failed
+  message: Request failed
+  meaning: The request could not be processed.
+  remediation: Check the request body against the endpoint's request-body schema.
+  source_operations:
+  - openapi/uveye-public-api-v1-openapi.yml#getInspectionDetails
+  - openapi/uveye-public-api-v1-openapi.yml#listLatestInspections
+  - openapi/uveye-public-api-v1-openapi.yml#createInspectionPublicLink
+  - openapi/uveye-public-api-v1-openapi.yml#getQuoteByInspection
+- status: 400
+  title: Missing search criteria
+  message: Missing search criteria
+  meaning: >-
+    No identifier or location filter was supplied. Inspection Details requires one of inspectionId,
+    vin, licensePlate or uniqueId; Public Link requires one of inspectionId, vin or uniqueId; Quote
+    requires one of inspectionId, licensePlate, vin or uniqueId; Latest Inspections requires one of
+    siteId, siteGroupId or vin.
+  remediation: Supply exactly one of the accepted identifiers in the request body.
+  source_operations:
+  - openapi/uveye-public-api-v1-openapi.yml#getInspectionDetails
+  - openapi/uveye-public-api-v1-openapi.yml#listLatestInspections
+  - openapi/uveye-public-api-v1-openapi.yml#createInspectionPublicLink
+  - openapi/uveye-public-api-v1-openapi.yml#getQuoteByInspection
+- status: 400
+  title: Malformed merchandise body
+  meaning: >-
+    Submit inventory - malformed body or a missing required field (vin, make, model, year).
+    Mark vehicles sold - missing or empty `vins`, or a non-string entry in the array.
+  remediation: Correct the payload; merchandise batches are not partially validated in the response.
+  source_operations:
+  - openapi/uveye-public-api-v1-openapi.yml#submitMerchandiseInventory
+  - openapi/uveye-public-api-v1-openapi.yml#markMerchandiseVehiclesSold
+- status: 401
+  title: Invalid API key
+  message: Invalid API key
+  meaning: The uveye-api-key sent in the request header is not a valid key.
+  remediation: Refresh the API key in the Global Keys tab of the UVeye Back Office and resend it.
+  source_operations:
+  - openapi/uveye-public-api-v1-openapi.yml#getInspectionDetails
+  - openapi/uveye-public-api-v1-openapi.yml#listLatestInspections
+  - openapi/uveye-public-api-v1-openapi.yml#createInspectionPublicLink
+  - openapi/uveye-public-api-v1-openapi.yml#recordInspectionShared
+  - openapi/uveye-public-api-v1-openapi.yml#getQuoteByInspection
+- status: 401
+  title: API key is disabled
+  message: API key is disabled
+  meaning: The key exists but has been disabled.
+  remediation: Refresh the API key in the UVeye Back Office and use the updated key.
+  source_operations:
+  - openapi/uveye-public-api-v1-openapi.yml#getInspectionDetails
+  - openapi/uveye-public-api-v1-openapi.yml#listLatestInspections
+  - openapi/uveye-public-api-v1-openapi.yml#createInspectionPublicLink
+  - openapi/uveye-public-api-v1-openapi.yml#recordInspectionShared
+  - openapi/uveye-public-api-v1-openapi.yml#getQuoteByInspection
+- status: 401
+  title: Merchandise credential rejected
+  meaning: >-
+    The Merchandise bearer credential is missing, invalid, disabled, or not authorized for
+    merchandise. Merchandise uses `Authorization: Bearer`, not the uveye-api-key header.
+  remediation: Use the merchandise API key issued at onboarding, sent as an Authorization bearer token.
+  source_operations:
+  - openapi/uveye-public-api-v1-openapi.yml#submitMerchandiseInventory
+  - openapi/uveye-public-api-v1-openapi.yml#markMerchandiseVehiclesSold
+- status: 404
+  title: Inspection not found
+  message: Inspection not found
+  meaning: >-
+    The inspection expired, no inspections match the supplied filters, or the vin / inspectionId /
+    uniqueId / licensePlate is wrong. For Quote, no inspection or active quote exists for the
+    identifier.
+  remediation: Verify the identifier, or discover a current inspectionId via listLatestInspections.
+  source_operations:
+  - openapi/uveye-public-api-v1-openapi.yml#getInspectionDetails
+  - openapi/uveye-public-api-v1-openapi.yml#listLatestInspections
+  - openapi/uveye-public-api-v1-openapi.yml#createInspectionPublicLink
+  - openapi/uveye-public-api-v1-openapi.yml#getQuoteByInspection
+  - openapi/uveye-public-api-v1-openapi.yml#getInspectionImage
+- status: 405
+  title: Unknown method
+  message: unknown method, please use POST
+  meaning: The endpoint was called with a method other than POST.
+  remediation: Use POST. Only the image endpoint is a GET.
+  source_operations:
+  - openapi/uveye-public-api-v1-openapi.yml#getInspectionDetails
+  - openapi/uveye-public-api-v1-openapi.yml#listLatestInspections
+  - openapi/uveye-public-api-v1-openapi.yml#createInspectionPublicLink
+  - openapi/uveye-public-api-v1-openapi.yml#recordInspectionShared
+  - openapi/uveye-public-api-v1-openapi.yml#getQuoteByInspection
+- status: 413
+  title: Batch too large
+  meaning: More than 100 vehicles were sent in a single merchandise request.
+  remediation: Chunk the inventory into batches of at most 100 vehicles.
+  source_operations:
+  - openapi/uveye-public-api-v1-openapi.yml#submitMerchandiseInventory
+  - openapi/uveye-public-api-v1-openapi.yml#markMerchandiseVehiclesSold
+silent_failures:
+- surface: submitMerchandiseInventory
+  description: >-
+    Merchandise batches are processed asynchronously and the 202 response carries no per-VIN
+    validation. A malformed or incomplete VIN is silently excluded from the batch and simply never
+    produces a webhook. Retain the returned requestId for support.

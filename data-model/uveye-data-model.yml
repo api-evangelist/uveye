@@ -1,0 +1,137 @@
+generated: '2026-08-02'
+method: derived
+source: openapi/uveye-public-api-v1-openapi.yml (derived in turn from
+  postman/uveye-public-api-v1-postman-collection.json)
+summary: >-
+  The UVeye domain is organised around the Inspection: a single scan of one Vehicle at one Site,
+  belonging to one Organization, decomposed into four module results - Artemis (tires), Helios
+  (undercarriage), Atlas (exterior) and Apollo (interior). Everything else hangs off the Inspection:
+  the shareable PublicLink, the appraisal Quote with its per-part Defects, the signed Image URLs, and
+  the Merchandise inventory record that resolves vehicle data inventory-first.
+entities:
+- name: Organization
+  id_field: organizationId
+  display_field: organizationDisplayName
+  description: The customer organization that owns the scanning sites.
+  relationships:
+  - {type: has_many, target: Site, via: siteId}
+  - {type: has_many, target: Inspection, via: organizationId}
+- name: SiteGroup
+  id_field: siteGroupId
+  description: A grouping of sites; also known as BAC for GM dealers. Usable as a location filter.
+  relationships:
+  - {type: has_many, target: Site, via: siteGroupId}
+- name: Site
+  id_field: siteId
+  display_field: siteDisplayName
+  description: A physical location where UVeye scanning systems are installed.
+  relationships:
+  - {type: belongs_to, target: Organization, via: organizationId}
+  - {type: belongs_to, target: SiteGroup, via: siteGroupId}
+  - {type: has_many, target: Inspection, via: siteId}
+- name: Vehicle
+  id_fields: [vin, licensePlate, uniqueId]
+  description: >-
+    The scanned vehicle. Not addressable on its own - it is identified inline on the Inspection by
+    VIN, license plate (with licensePlateUsStateAbbreviation) or barcode (uniqueId), plus manufacturer
+    attributes (year, make, model, trim, cabSubTrim, bedSubTrim, bodyType, doorCount, fuelType,
+    numberOfCylinders, engineDisplacement, exteriorColor) and condition attributes (isDriveable,
+    spareTireInfo, keyType).
+  relationships:
+  - {type: has_many, target: Inspection, via: vin}
+  - {type: has_one, target: MerchandiseVehicle, via: vin}
+- name: Inspection
+  id_field: inspectionId
+  description: One scan event. The root aggregate of the API.
+  timestamps: [inspectedAt]
+  validity_flags: [isArtemisModuleInvalid, isAtlasModuleInvalid, isHeliosModuleInvalid, isScanInvalid]
+  relationships:
+  - {type: belongs_to, target: Site, via: siteId}
+  - {type: belongs_to, target: Organization, via: organizationId}
+  - {type: belongs_to, target: Vehicle, via: vin}
+  - {type: has_one, target: ArtemisResult, via: artemis}
+  - {type: has_one, target: HeliosResult, via: helios}
+  - {type: has_one, target: AtlasResult, via: atlas}
+  - {type: has_one, target: ApolloResult, via: apollo}
+  - {type: has_one, target: PublicLink, via: inspectionId}
+  - {type: has_one, target: Quote, via: inspectionId}
+  - {type: has_many, target: Image, via: 'overviewImage, coverImage'}
+  - {type: has_one, target: MerchandiseVehicle, via: merchandiseVehicleData}
+- name: ArtemisResult
+  description: Tire condition. Four wheel positions, each an object of its own.
+  positions: [leftFront, leftRear, rightFront, rightRear]
+  relationships:
+  - {type: belongs_to, target: Inspection, via: artemis}
+  - {type: has_many, target: Image, via: 'treadImage, wallImage, treadImageWithGrooves, croppedWallImage, croppedTreadImage'}
+  notable_fields: [isMismatchTire, isAllSeasonPresent, isSpeedAndLoadNormal]
+- name: HeliosResult
+  description: Undercarriage condition and its detections.
+  relationships:
+  - {type: belongs_to, target: Inspection, via: helios}
+  - {type: has_many, target: Detection, via: detections}
+- name: AtlasResult
+  description: Exterior body condition, its detections, cover images and animated frames.
+  relationships:
+  - {type: belongs_to, target: Inspection, via: atlas}
+  - {type: has_many, target: Detection, via: detections}
+  - {type: has_many, target: Image, via: 'coverImages, animatedFrames'}
+  notable_fields: [bodyPartDisplayName, bodyPartCustomerMappingId, damageTypeCustomerMappingId]
+- name: ApolloResult
+  description: Interior condition (apolloInformation).
+  relationships:
+  - {type: belongs_to, target: Inspection, via: apollo}
+  notable_fields: [interiorColor, interiorType, hasHeadrests, hasThirdRowSeating, isBioHazard]
+- name: Detection
+  description: >-
+    A single detected condition on a module result, classified as alert or warning (filterable with
+    alertsOnly), carrying its image, cropped image and millimeter/inch dimensions.
+  relationships:
+  - {type: belongs_to, target: HeliosResult}
+  - {type: belongs_to, target: AtlasResult}
+  - {type: has_many, target: Image, via: 'image, croppedImage'}
+- name: PublicLink
+  description: A customer-shareable rendering of an inspection.
+  ttl: 30 days from creation
+  relationships:
+  - {type: belongs_to, target: Inspection, via: inspectionId}
+  notable_fields: [url, expirationDate, inspectionDate, plainMode]
+  lifecycle: created by createInspectionPublicLink; sharing recorded by recordInspectionShared
+- name: Quote
+  description: Appraisal derived from an inspection - offer price, total reconditioning cost and the
+    public quote link.
+  relationships:
+  - {type: belongs_to, target: Inspection, via: inspectionId}
+  - {type: has_many, target: Defect, via: defects}
+- name: Defect
+  description: One car part with damage. Each defect carries damages[] (estimated repairs for that
+    part), and each repair carries its own damages[] of supporting images.
+  relationships:
+  - {type: belongs_to, target: Quote, via: defects}
+  - {type: has_many, target: Image, via: damages}
+- name: Image
+  id_field: key
+  description: >-
+    An image acquired during an inspection. Addressed by a signed URL containing a `key` query
+    parameter; the URL is returned embedded in other endpoints' responses and is never constructed by
+    the client.
+  ttl: 1 hour
+  relationships:
+  - {type: belongs_to, target: Inspection}
+- name: MerchandiseVehicle
+  id_field: vin
+  description: >-
+    A dealer inventory record submitted to the merchandise surface. Required vin, make, model, year;
+    color and body improve rendered output; the remaining fields are UI metadata only. Resolves onto
+    inspections as merchandiseVehicleData (inventory-first) once matched.
+  relationships:
+  - {type: belongs_to, target: Vehicle, via: vin}
+  - {type: has_many, target: Image, via: 'images (delivered by webhook)'}
+  states: [submitted, published (images ready, webhook delivered), sold]
+identifier_notes:
+  interchangeable_lookups: >-
+    inspectionId, vin, licensePlate and uniqueId are interchangeable request-body identifiers on
+    getInspectionDetails and getQuoteByInspection; createInspectionPublicLink accepts inspectionId,
+    vin and uniqueId; listLatestInspections instead filters by siteId, siteGroupId or vin.
+  id_format: UUID v4 for inspectionId (observed in published examples), manufacturer format for vin
+  no_prefixes: UVeye ids carry no type prefix
+render: null

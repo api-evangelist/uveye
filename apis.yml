@@ -1,23 +1,148 @@
 aid: uveye
 name: UVeye
-description: 'UVeye is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'UVeye builds AI-powered automated vehicle inspection systems — "the MRI for cars" —
+  that drive a vehicle through a scanning lane and produce a full condition report in seconds. Four
+  scanning modules cover the vehicle: Artemis (tires and tread), Helios (undercarriage), Atlas
+  (exterior body damage) and Apollo (interior). The systems are deployed across dealership service
+  lanes, fleet and leasing depots, auctions and remarketing lots, rental returns, OEM manufacturing
+  and logistics/PDI ports. UVeye exposes the resulting inspection data to third parties through the
+  UVeye Public API v1 — inspection detail lookups by VIN, license plate, inspection id or barcode,
+  latest-inspection discovery by site or site group, customer-facing public inspection links,
+  appraisal/quote data, inspection imagery, and a Merchandise surface that ingests dealer inventory
+  and pushes rendered multi-angle imagery back over a signed webhook. Headquartered in Teaneck, New
+  Jersey with offices in Norcross GA, Tel Aviv and London.'
 url: https://raw.githubusercontent.com/api-evangelist/uveye/refs/heads/main/apis.yml
+image: https://uveye.com/favicon.ico
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment
 specificationVersion: '0.20'
 created: '2026-08-02'
 modified: '2026-08-02'
 tags:
+- Automotive
+- Vehicle Inspection
+- Artificial Intelligence
+- Computer Vision
+- Dealerships
+- Fleet Management
+- Auctions and Remarketing
+- Automotive Retail
+- Inspection Data
 - Company
-apis: []
+apis:
+- aid: uveye:public-api-v1
+  name: UVeye Public API v1
+  description: 'Third-party access to UVeye vehicle inspection data. Retrieve full inspection records
+    (Artemis tires, Helios undercarriage, Atlas exterior, Apollo interior) by inspection id, VIN,
+    license plate or barcode; discover the latest inspections for a site or site group; mint
+    customer-facing public inspection links that expire after 30 days; pull appraisal/quote data with
+    damages grouped by car part; fetch inspection imagery; and submit dealer inventory to the
+    Merchandise surface, which renders multi-angle imagery and delivers it back over a signed
+    webhook. Most endpoints authenticate with a uveye-api-key header generated in the UVeye Back
+    Office; the Merchandise endpoints use a separate bearer credential issued at onboarding.'
+  humanURL: https://api.v1.uveye.dev/
+  baseURL: https://api.uveye.dev/v1
+  tags:
+  - Vehicle Inspection
+  - Automotive
+  - Inspection Data
+  - Merchandise
+  - Appraisal
+  properties:
+  - type: OpenAPI
+    url: openapi/uveye-public-api-v1-openapi.yml
+  - type: Documentation
+    url: https://api.v1.uveye.dev/
+  - type: APIReference
+    url: https://api.v1.uveye.dev/
+  - type: PostmanCollection
+    url: postman/uveye-public-api-v1-postman-collection.json
+  - type: Overlay
+    url: overlays/uveye-public-api-v1-overlay.yaml
+  - type: Webhooks
+    url: asyncapi/uveye-merchandise-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/uveye-problem-types.yml
+  - type: DataModel
+    url: data-model/uveye-data-model.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: AgenticAccess
+  url: agentic-access/uveye-agentic-access.yml
+- type: DomainSecurity
+  url: security/uveye-domain-security.yml
 - type: Website
-  url: https://forgeglobal.com/uveye_stock/
+  url: https://uveye.com/
+- type: DeveloperPortal
+  url: https://api.v1.uveye.dev/
+- type: Documentation
+  url: https://api.v1.uveye.dev/
+- type: APIReference
+  url: https://api.v1.uveye.dev/
+- type: GettingStarted
+  url: https://api.v1.uveye.dev/
+- type: Postman
+  url: https://api.v1.uveye.dev/
+- type: Support
+  url: https://uveye.com/customer-support/
+- type: Blog
+  url: https://uveye.com/blog/
+- type: BlogRSS
+  url: https://uveye.com/feed/
+- type: GitHubOrganization
+  url: https://github.com/UVeye
+- type: PrivacyPolicy
+  url: https://uveye.com/privacy-policy/
+- type: TermsOfService
+  url: https://uveye.com/terms-and-conditions/
+- type: SignUp
+  url: https://us.backoffice.uveye.app/
+- type: TrustCenter
+  url: security/uveye-trust-center.yml
+- type: Compliance
+  url: https://trust.uveye.com/
+- type: Security
+  url: https://trust.uveye.com/
+- type: Integrations
+  url: https://uveye.com/partners/integrations/
+- type: Careers
+  url: https://uveye.com/careers/
+- type: Webhooks
+  url: asyncapi/uveye-merchandise-webhooks.yml
+- type: Authentication
+  url: authentication/uveye-authentication.yml
+- type: Conventions
+  url: conventions/uveye-conventions.yml
+- type: Idempotency
+  url: conventions/uveye-conventions.yml
+- type: Conformance
+  url: conformance/uveye-conformance.yml
+- type: ChangeLog
+  url: changelog/uveye-changelog.yml
+- type: Lifecycle
+  url: lifecycle/uveye-lifecycle.yml
+- type: RateLimits
+  url: rate-limits/uveye-rate-limits.yml
+- type: Sandbox
+  url: sandbox/uveye-sandbox.yml
+- type: Packages
+  url: packages/uveye-packages.yml
+- type: WellKnown
+  url: well-known/uveye-well-known.yml
+- type: LLMsTxt
+  url: llms/uveye-llms.txt
+- type: AgentSkill
+  url: skills/_index.yml
+- type: VulnerabilityDisclosure
+  url: security/uveye-vulnerability-disclosure.yml
+x-enrichment:
+  date: '2026-08-02'
+  status: enriched
+  artifacts_added: 25
+  pass: local-v1

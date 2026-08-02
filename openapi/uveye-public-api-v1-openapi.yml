@@ -1,0 +1,1111 @@
+openapi: 3.1.0
+info:
+  title: UVeye Public API v1
+  version: '1.2'
+  summary: Third-party access to UVeye automated vehicle-inspection data.
+  description: 'Allows third-party access to UVeye''s vehicle inspection data. Inspections are produced
+    by UVeye''s scanning systems and exposed through four modules: **Artemis** (tires), **Helios** (undercarriage),
+    **Atlas** (exterior) and **Apollo** (interior). The API also carries the **Merchandise** surface,
+    which accepts a dealer''s vehicle inventory and pushes rendered multi-angle imagery back over a webhook.
+
+
+    All data provided is confidential and may not be used in any way without explicit permission from
+    UVeye.
+
+
+    Most endpoints authenticate with a `uveye-api-key` header, generated in the Global Keys tab of the
+    UVeye Back Office. The Merchandise endpoints use a separate credential sent as `Authorization: Bearer
+    <merchandise API key>`, issued at onboarding.
+
+
+    This document is DERIVED by API Evangelist from UVeye''s own published Postman collection (documentation
+    version v1.2, 2026-07-06) at https://api.v1.uveye.dev/. It is not published by UVeye.'
+  contact:
+    name: UVeye Customer Support
+    url: https://uveye.com/customer-support/
+  x-origin:
+  - format: postman
+    version: 2.0.0
+    url: https://api.v1.uveye.dev/
+    converter:
+      name: api-evangelist enrichment pipeline
+      version: local-v1
+servers:
+- url: https://api.uveye.dev/v1
+  description: Development environment (base URL published in the API documentation).
+- url: https://api-uveye-playground.web.app/v1/i
+  description: Staging / playground environment (base_url from the published Postman Staging environment).
+externalDocs:
+  description: UVeye Public API v1 documentation (Postman)
+  url: https://api.v1.uveye.dev/
+security:
+- uveyeApiKey: []
+tags:
+- name: Inspections
+  description: Retrieve vehicle inspection data and the most recent inspections for a site or site group.
+- name: Public Links
+  description: Generate and record customer-facing public inspection links.
+- name: Appraisal
+  description: Appraisal / quote data derived from an inspection.
+- name: Media
+  description: Inspection imagery.
+- name: Merchandise
+  description: Submit dealer inventory for merchandising and mark vehicles sold.
+paths:
+  /inspection:
+    post:
+      operationId: getInspectionDetails
+      summary: Get inspection details
+      description: Returns the full inspection record for a vehicle. One of `inspectionId`, `vin`, `licensePlate`
+        or `uniqueId` must be supplied. The response nests the Artemis (tires), Helios (undercarriage),
+        Atlas (exterior) and Apollo (interior) module objects.
+      tags:
+      - Inspections
+      security:
+      - uveyeApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InspectionLookup'
+            examples:
+              byInspectionId:
+                summary: Look up by inspection id
+                value:
+                  inspectionId: 79c0c1d0-f600-413d-87f1-7e2f70d03ecb
+      responses:
+        '200':
+          description: The inspection record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inspection'
+              example:
+                inspectionId: 8b14a050-713c-4cb5-bbea-4eed7e05a376
+                artemis:
+                  leftFront:
+                    treadImage: https://staging.api.uveye.app/v1/image?key=WGP6HmH74NVV2U9DIyGk
+                    wallImage: https://staging.api.uveye.app/v1/image?key=biyzj84gqGtf0cEL48FQ
+                    treadDetections: []
+                    wallDetections: []
+                    brand: ''
+                    dot: ''
+                    tireAge: ''
+                    pressure: ''
+                    size: ''
+                    speedAndLoad: ''
+                    unevenTreadsWearDetected: null
+                    wornTireDetected: ''
+                    isMountingCorrect: null
+                    isAllSeasonPresent: null
+                    isSpeedAndLoadNormal: null
+                    grooves: []
+                  leftRear:
+                    treadImage: https://staging.api.uveye.app/v1/image?key=hDkAkn9Uwm0eOwum4DUO
+                    wallImage: https://staging.api.uveye.app/v1/image?key=oM5zL0ztwFYvd8ikqwBN
+                    treadDetections: []
+                    wallDetections: []
+                    brand: ''
+                    dot: ''
+                    tireAge: ''
+                    pressure: ''
+                    size: ''
+                    speedAndLoad: ''
+                    unevenTreadsWearDetected: null
+                    wornTireDetected: ''
+                    isMountingCorrect: null
+                    isAllSeasonPresent: null
+                    isSpeedAndLoadNormal: null
+                    grooves: []
+                  rightFront:
+                    treadImage: https://staging.api.uveye.app/v1/image?key=boYhKvRao57Cb0lmCSCT
+                    wallImage: https://staging.api.uveye.app/v1/image?key=Jis7NFgxkaFwFbXfDzIv
+                    treadDetections: []
+                    wallDetections: []
+                    brand: ''
+                    dot: ''
+                    tireAge: ''
+                    pressure: ''
+                    size: ''
+                    speedAndLoad: ''
+                    unevenTreadsWearDetected: null
+                    wornTireDetected: ''
+                    isMountingCorrect: null
+                    isAllSeasonPresent: null
+                    isSpeedAndLoadNormal: null
+                    grooves: []
+                  rightRear:
+                    treadImage: https://staging.api.uveye.app/v1/image?key=IXjyBMmDP9JyDVTpyDQN
+                    wallImage: https://staging.api.uveye.app/v1/image?key=d0hsklrrquyCoXF6CnB1
+                    treadDetections: []
+                    wallDetections: []
+                    brand: ''
+                    dot: ''
+                    tireAge: ''
+                    pressure: ''
+                    size: ''
+                    speedAndLoad: ''
+                    unevenTreadsWearDetected: null
+                    wornTireDetected: ''
+                    isMountingCorrect: null
+                    isAllSeasonPresent: null
+                    isSpeedAndLoadNormal: null
+                    grooves: []
+                helios:
+                  undercarriageImage: https://staging.api.uveye.app/v1/image?key=OG7kRrzYXNby8xEmmzFc
+                  detections: []
+                atlas:
+                  detections: []
+                  coverImages:
+                    leftFront: ''
+                    rightFront: ''
+                    leftRear: ''
+                    rightRear: ''
+                  animatedFrames:
+                    left:
+                    - https://staging.api.uveye.app/v1/image?key=d1VMfKboj7RP9zIECrJP
+                    - https://staging.api.uveye.app/v1/image?key=DzCqseYc3eD7dy68PSvT
+                    top:
+                    - https://staging.api.uveye.app/v1/image?key=03lRIemHCADHmmZvMwlM
+                    - https://staging.api.uveye.app/v1/image?key=cR7KydHigOnEoLUW73o5
+                    right:
+                    - https://staging.api.uveye.app/v1/image?key=SrCZGNaqUHMIHM92wlFd
+                    - https://staging.api.uveye.app/v1/image?key=P0EWc6G49YXtlsIm7uZL
+                overviewImage: ''
+                coverImage: ''
+                organizationId: GoGP0TEVU6YVBXkSyb2e_mirror
+                siteId: WwiWSdfhyWiMSOXfKKDx_mirror
+                inspectedAt: '2025-12-01T23:44:09.000Z'
+                licensePlate: DZ58SE
+                licensePlateUsStateAbbreviation: FL
+                vin: 3N1AB8CV9SY330347
+                year: '2025'
+                numberOfCylinders: null
+                fuelType: Gasoline
+                bodyType: Sedan/Saloon
+                make: NISSAN
+                model: Sentra
+                trim: SV
+                cabSubTrim: ''
+                bedSubTrim: ''
+                doorCount: 4
+                exteriorColor: Black
+                engineDisplacement: '2000'
+                uniqueId: ''
+                spareTireInfo: ''
+                keyType: ''
+                isArtemisModuleInvalid: false
+                isAtlasModuleInvalid: false
+                isHeliosModuleInvalid: false
+                isScanInvalid: false
+        '400':
+          description: Bad Request - Request failed, or required search criteria are missing from the
+            request body.
+        '401':
+          description: Unauthorized - `Invalid API key` or `API key is disabled`. Refresh the key in the
+            UVeye Back Office and resend it in the `uveye-api-key` header.
+        '404':
+          description: Not Found - Inspection not found - the inspection expired, or the supplied identifier
+            is wrong.
+        '405':
+          description: Method Not Allowed - `unknown method, please use POST` - the endpoint only accepts
+            POST.
+  /latest-inspections:
+    post:
+      operationId: listLatestInspections
+      summary: List latest inspections
+      description: Returns the most recent inspections for a site, site group or VIN so you can discover
+        the `inspectionId` values to use with the Inspection Details request.
+      tags:
+      - Inspections
+      security:
+      - uveyeApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LatestInspectionsQuery'
+            examples:
+              byDays:
+                summary: Last 100 days for a site
+                value:
+                  siteId: <site id>
+                  amountOfDaysForSearch: 100
+      responses:
+        '200':
+          description: The matching inspections.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  inspections:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InspectionSummary'
+              example: null
+        '400':
+          description: Bad Request - Request failed, or required search criteria are missing from the
+            request body.
+        '401':
+          description: Unauthorized - `Invalid API key` or `API key is disabled`. Refresh the key in the
+            UVeye Back Office and resend it in the `uveye-api-key` header.
+        '404':
+          description: Not Found - Inspection not found - the inspection expired, or the supplied identifier
+            is wrong.
+        '405':
+          description: Method Not Allowed - `unknown method, please use POST` - the endpoint only accepts
+            POST.
+  /public-link:
+    post:
+      operationId: createInspectionPublicLink
+      summary: Create an inspection public link
+      description: Returns a shareable public link to an inspection. Public inspection links expire 30
+        days after they are generated; the exact expiry is returned in `expirationDate`.
+      tags:
+      - Public Links
+      security:
+      - uveyeApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicLinkRequest'
+            examples:
+              byInspectionId:
+                value:
+                  inspectionId: 79c0c1d0-f600-413d-87f1-7e2f70d03ecb
+                  plainMode: false
+      responses:
+        '200':
+          description: The public link.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicLink'
+              example: null
+        '400':
+          description: Bad Request - Request failed, or required search criteria are missing from the
+            request body.
+        '401':
+          description: Unauthorized - `Invalid API key` or `API key is disabled`. Refresh the key in the
+            UVeye Back Office and resend it in the `uveye-api-key` header.
+        '404':
+          description: Not Found - Inspection not found - the inspection expired, or the supplied identifier
+            is wrong.
+        '405':
+          description: Method Not Allowed - `unknown method, please use POST` - the endpoint only accepts
+            POST.
+  /inspection-shared:
+    post:
+      operationId: recordInspectionShared
+      summary: Record that an inspection was shared
+      description: Records that an inspection's public link was shared with a customer. Call this after
+        sending a public link so the share is logged in the UVeye system. Returns 200 with an empty body
+        on success.
+      tags:
+      - Public Links
+      security:
+      - uveyeApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - inspectionId
+              properties:
+                inspectionId:
+                  type: string
+                  description: Unique id of the inspection that was shared.
+                publicLinkUrl:
+                  type: string
+                  description: The public inspection link that was sent to the customer.
+            examples:
+              withLink:
+                value:
+                  inspectionId: '1234567890'
+                  publicLinkUrl: https://us.uvpub.uveye.app/public/ABCDEF123456
+              idOnly:
+                value:
+                  inspectionId: '1234567890'
+      responses:
+        '200':
+          description: The share was recorded. Empty body.
+        '400':
+          description: Bad Request - inspectionId is missing or the request is malformed.
+        '401':
+          description: Unauthorized - `Invalid API key` or `API key is disabled`. Refresh the key in the
+            UVeye Back Office and resend it in the `uveye-api-key` header.
+        '405':
+          description: Method Not Allowed - `unknown method, please use POST` - the endpoint only accepts
+            POST.
+  /quote:
+    post:
+      operationId: getQuoteByInspection
+      summary: Get appraisal quote data for an inspection
+      description: 'Returns the appraisal data of an inspection: basic vehicle information, the public
+        quote link, the offer price and total reconditioning cost (when available), and damages grouped
+        by car part. Each `defects[]` entry is one car part; its `damages[]` array holds the estimated
+        repairs for that part, and each repair carries its own `damages[]` array of supporting images.
+        The inspected vehicle must have a related appraisal ready on uvcamp.'
+      tags:
+      - Appraisal
+      security:
+      - uveyeApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuoteRequest'
+            examples:
+              byInspectionId:
+                value:
+                  inspectionId: 30a54b98-6fd6-4a96-9b6b-da8885d7c826
+                  includeImages: true
+      responses:
+        '200':
+          description: The appraisal quote.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Appraisal quote payload - see the example for the published shape.
+              example:
+                inspectionId: 2b16873e-31de-4e84-9a5c-6e5eb0020536
+                licensePlate: Z865YY
+                vin: JTMWFREV4HD096740
+                make: TOYOTA
+                model: RAV4
+                year: 2017
+                coverImage: https://us.api.uveye.app/v1/image?key=HcUhRhZt2aC4gpsTFRao
+                quoteUrl: https://us.public.uveye.app/evaluation/report/nWz0GSNPYFCSl61g914D
+                defects:
+                - partName: BumperRear
+                  module: Atlas
+                  isAutoEstimated: true
+                  cost: 97.5
+                  defectDescription: A small scratch on the rear bumper that does not penetrate the paint
+                    and is primarily cosmetic.
+                  damages:
+                  - imageUrl: https://us.api.uveye.app/v1/image?key=qA7Mp5hIepJstTu4tZ0M
+                    detectionId: 2b16873e-31de-4e84-9a5c-6e5eb0020536_scratches_damage_detector_inspection_50
+                    rectangle:
+                      pointType: Relative
+                      width: 0.037700000000000004
+                      height: 0.0286
+                      top: 0.6617000000000001
+                      left: 0.31365
+                    damageType: BodyScratch
+                - partName: DoorRearRight
+                  module: Atlas
+                  isAutoEstimated: true
+                  cost: 90
+                  defectDescription: A small dent found on the rear right door, which may not affect the
+                    door's functionality but is visually noticeable.
+                  damages:
+                  - imageUrl: https://us.api.uveye.app/v1/image?key=rdS5zTMih1qo1XMMozH5
+                    detectionId: 2b16873e-31de-4e84-9a5c-6e5eb0020536_scratches_damage_detector_inspection_9
+                    rectangle:
+                      pointType: Relative
+                      width: 0.0819
+                      height: 0.0819
+                      top: 0.59055
+                      left: 0.6315500000000001
+                    damageType: BodyGlassesDent
+                - partName: FenderRearLeft
+                  module: Atlas
+                  isAutoEstimated: true
+                  cost: 105
+                  defectDescription: The rear left fender has small dents that are not deep and do not
+                    affect the structural integrity of the vehicle. These dents can be repaired with minor
+                    bodywork.
+                  damages:
+                  - imageUrl: https://us.api.uveye.app/v1/image?key=0KQw5xfzq8oZFA4XNN4b
+                    detectionId: 2b16873e-31de-4e84-9a5c-6e5eb0020536_scratches_damage_detector_inspection_5
+                    rectangle:
+                      pointType: Relative
+                      width: 0.037700000000000004
+                      height: 0.0273
+                      top: 0.57285
+                      left: 0.33964999999999995
+                    damageType: BodyGlassesDent
+                  - imageUrl: https://us.api.uveye.app/v1/image?key=cMmZnll44vN2IceKb31O
+                    detectionId: 2b16873e-31de-4e84-9a5c-6e5eb0020536_scratches_damage_detector_inspection_4
+                    rectangle:
+                      pointType: Relative
+                      width: 0.0325
+                      height: 0.0234
+                      top: 0.5852999999999999
+                      left: 0.35825
+                    damageType: BodyShallowDent
+                - partName: LeftFrontTire
+                  module: Artemis
+                  isAutoEstimated: true
+                  cost: 275
+                  defectDescription: Wheel damage detected. Replacement or repair required.
+                  damages:
+                  - imageUrl: https://us.api.uveye.app/v1/image?key=A6E8uXtUnhZ4WBPT65a3
+                    detectionId: g75qd975f7n0|RimDamageCosmetic
+                    rectangle:
+                      pointType: Relative
+                      top: 0.676
+                      left: 0.547
+                      width: 0.071
+                      height: 0.022
+                    damageType: TireCosmeticRimDamage
+                - partName: Trunk
+                  module: Atlas
+                  isAutoEstimated: true
+                  cost: 222.5
+                  defectDescription: The trunk has moderate sun damage, which may lead to paint deterioration
+                    and potential rusting if not addressed.
+                  damages:
+                  - imageUrl: https://us.api.uveye.app/v1/image?key=Bcw71US7f1kV5XrGJu8g
+                    detectionId: 2b16873e-31de-4e84-9a5c-6e5eb0020536_scratches_damage_detector_inspection_10
+                    rectangle:
+                      pointType: Relative
+                      width: 0.1898
+                      height: 0.16640000000000002
+                      top: 0.2788
+                      left: 0.8311
+                    damageType: BodySunDamage
+                totalReconditioningCost: 790
+                offerPrice: 11400
+        '400':
+          description: 'Bad Request - `Request failed`, or `Missing search criteria`: one of inspectionId,
+            licensePlate, vin or uniqueId must be provided.'
+        '401':
+          description: Unauthorized - `Invalid API key` or `API key is disabled`. Refresh the key in the
+            UVeye Back Office and resend it in the `uveye-api-key` header.
+        '404':
+          description: Not Found - no inspection or active quote found for the given identifier.
+        '405':
+          description: Method Not Allowed - `unknown method, please use POST` - the endpoint only accepts
+            POST.
+  /image:
+    get:
+      operationId: getInspectionImage
+      summary: Get an inspection image
+      description: Returns an image acquired during a UVeye inspection, identified by a `key` query parameter.
+        You normally do not build this request yourself - image URLs returned inside other endpoints'
+        responses (overviewImage, coverImage, tire treadImage/wallImage, detection image/croppedImage,
+        Atlas coverImages/animatedFrames) already include the `?key=` parameter; use the returned URL
+        as-is. Image URLs are valid for 1 hour unless stated otherwise.
+      tags:
+      - Media
+      security:
+      - uveyeApiKey: []
+      parameters:
+      - name: key
+        in: query
+        required: true
+        schema:
+          type: string
+        description: The image key, taken from an image URL returned by another endpoint.
+      responses:
+        '200':
+          description: The raw image.
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            image/png:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: Unauthorized - `Invalid API key` or `API key is disabled`. Refresh the key in the
+            UVeye Back Office and resend it in the `uveye-api-key` header.
+        '404':
+          description: Not Found - the image key is unknown or the URL has expired (image URLs expire
+            after 1 hour).
+  /merchandise/inventory/vehicles:
+    post:
+      operationId: submitMerchandiseInventory
+      summary: Submit inventory
+      description: 'Push VINs plus basic vehicle data; UVeye scans, renders multi-angle images and pushes
+        them back to your webhook. Batch limit is 100 vehicles per request (more returns 413). Resubmit
+        your full active inventory periodically (for example every 4 hours) - unchanged vehicles are no-ops,
+        deduplicated by content hash. Processed asynchronously: there is no per-VIN validation in the
+        response, and a malformed or incomplete VIN is excluded and simply never produces a webhook.'
+      tags:
+      - Merchandise
+      security:
+      - merchandiseBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - vehicles
+              properties:
+                vehicles:
+                  type: array
+                  maxItems: 100
+                  items:
+                    $ref: '#/components/schemas/MerchandiseVehicle'
+            example:
+              vehicles:
+              - vin: 1G1ZD5ST7JF123456
+                make: Chevrolet
+                model: Malibu
+                year: 2024
+                color: Silver
+                body: Sedan
+                stockNumber: ST-12345
+                mileage: 12500
+                type: USED
+                sellingPrice: 21500
+      responses:
+        '202':
+          description: Accepted for asynchronous processing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchandiseAccepted'
+              example:
+                received: true
+                requestId: f1a3b2c5-8e9d-4a6f-9c8e-1d2b3a4e5f6c
+                count: 78
+        '400':
+          description: Bad Request - malformed body or a missing required field.
+        '401': &id001
+          description: Unauthorized - the merchandise key is missing, invalid, disabled, or not authorized
+            for merchandise.
+        '413': &id002
+          description: Payload Too Large - more than 100 vehicles in a single request.
+  /merchandise/inventory/sold:
+    post:
+      operationId: markMerchandiseVehiclesSold
+      summary: Mark vehicles sold
+      description: Mark vehicles sold so UVeye stops merchandising them. Call this explicitly when a VIN
+        sells - v1 does not auto-detect sold vehicles from their absence in a resubmitted inventory. To
+        bring a sold VIN back, resubmit it via Submit inventory. Same 100-vehicle batch limit.
+      tags:
+      - Merchandise
+      security:
+      - merchandiseBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - vins
+              properties:
+                vins:
+                  type: array
+                  maxItems: 100
+                  items:
+                    type: string
+            example:
+              vins:
+              - 1G1ZD5ST7JF123456
+              - 1HGCM82633A004352
+      responses:
+        '202':
+          description: Accepted for asynchronous processing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchandiseAccepted'
+              example:
+                received: true
+                requestId: a7c9e1d3-4b6f-4c2a-8e1d-9f3b2a4c6d8e
+                count: 2
+        '400':
+          description: Bad Request - missing/empty `vins` or a non-string entry.
+        '401': *id001
+        '413': *id002
+components:
+  securitySchemes:
+    uveyeApiKey:
+      type: apiKey
+      in: header
+      name: uveye-api-key
+      description: Global API key generated in the Global Keys tab of the UVeye Back Office.
+    merchandiseBearer:
+      type: http
+      scheme: bearer
+      description: 'Merchandise API key issued at onboarding, sent as `Authorization: Bearer <merchandise
+        API key>`. Distinct from `uveye-api-key`.'
+  schemas:
+    InspectionLookup:
+      type: object
+      description: Exactly one of inspectionId, vin, licensePlate or uniqueId must be supplied.
+      properties:
+        inspectionId:
+          type: string
+          description: A unique id of the inspection provided by the UVeye system; found in the scan page
+            URL.
+        vin:
+          type: string
+          description: The vehicle VIN provided by the manufacturer; found under vehicle info on the inspection
+            page.
+        licensePlate:
+          type: string
+          description: License plate of the vehicle; found under vehicle info on the inspection page.
+        uniqueId:
+          type: string
+          description: The barcode of the vehicle (when given); found on the scan page.
+        alertsOnly:
+          type: boolean
+          default: false
+          description: When true the response returns only alert detections and hides warning detections.
+        showTreadPolygons:
+          type: boolean
+          default: false
+          description: When true, tread polygon coordinates are included.
+      anyOf:
+      - required:
+        - inspectionId
+      - required:
+        - vin
+      - required:
+        - licensePlate
+      - required:
+        - uniqueId
+    Inspection:
+      type: object
+      description: A single vehicle inspection with its per-module results.
+      properties:
+        inspectionId:
+          type: string
+          description: A unique id of the inspection.
+        artemis:
+          type: object
+          description: Tire condition per wheel position (leftFront, leftRear, rightFront, rightRear).
+        helios:
+          type: object
+          description: Undercarriage condition, including detections.
+        atlas:
+          type: object
+          description: Exterior condition, including detections, coverImages and animatedFrames.
+        apollo:
+          type: object
+          description: 'Interior condition (apolloInformation: interiorColor, interiorType, hasHeadrests,
+            hasThirdRowSeating, isBioHazard).'
+        overviewImage:
+          type: string
+          description: URL to the overview image of the vehicle.
+        coverImage:
+          type: string
+          description: URL to the cover image of the vehicle.
+        organizationId:
+          type: string
+          description: A unique id of the organization that generated the inspection.
+        organizationDisplayName:
+          type: string
+          description: Name of the organization that generated the inspection.
+        siteId:
+          type: string
+          description: A unique id of the site that generated the inspection.
+        siteDisplayName:
+          type: string
+          description: Name of the site that generated the inspection.
+        inspectedAt:
+          type: string
+          description: Date and time the inspection occurred.
+        licensePlate:
+          type: string
+          description: License plate of the scanned vehicle.
+        licensePlateUsStateAbbreviation:
+          type: string
+          description: Two-letter US state code shown on the license plate.
+        vin:
+          type: string
+          description: Vehicle VIN provided by the manufacturer.
+        uniqueId:
+          type: string
+          description: Barcode identifier of the vehicle, when given.
+        isArtemisModuleInvalid:
+          type: boolean
+          description: True if any tire inspection images failed to upload.
+        isAtlasModuleInvalid:
+          type: boolean
+          description: True if the exterior inspection images failed to upload.
+        isHeliosModuleInvalid:
+          type: boolean
+          description: True if the undercarriage inspection image failed to upload.
+        isScanInvalid:
+          type: boolean
+          description: True if any of the inspection modules is invalid.
+        year:
+          type: string
+          description: Vehicle model year.
+        numberOfCylinders:
+          type:
+          - number
+          - 'null'
+          description: Number of engine cylinders; null when unavailable.
+        fuelType:
+          type: string
+          description: Fuel type of the vehicle.
+        bodyType:
+          type: string
+          description: Body type of the vehicle.
+        make:
+          type: string
+          description: Vehicle make.
+        model:
+          type: string
+          description: Vehicle model.
+        trim:
+          type: string
+          description: Vehicle trim level, when available.
+        cabSubTrim:
+          type: string
+          description: Cab sub-trim, for applicable body types.
+        bedSubTrim:
+          type: string
+          description: Bed sub-trim, for applicable body types.
+        doorCount:
+          type:
+          - number
+          - 'null'
+          description: Number of doors; null when unavailable.
+        exteriorColor:
+          type: string
+          description: Exterior color of the vehicle.
+        engineDisplacement:
+          type: string
+          description: Engine displacement of the vehicle.
+        isDriveable:
+          type: boolean
+          description: True if the vehicle was determined to be driveable.
+        spareTireInfo:
+          type: string
+          description: Spare tire information, when available.
+        keyType:
+          type: string
+          description: The vehicle's key type, when available.
+        merchandiseVehicleData:
+          type: object
+          description: Resolved vehicle data (inventory-first); present only once resolved.
+    LatestInspectionsQuery:
+      type: object
+      description: One location filter (siteId, siteGroupId or vin) plus one result-window filter (amountOfDaysForSearch,
+        amountOfHoursForSearch or amountOfInspections).
+      properties:
+        siteId:
+          type: string
+          description: The id of the site to search inspections for.
+        siteGroupId:
+          type: string
+          description: The id of the site group to search inspections for (also known as BAC for GM dealers).
+        vin:
+          type: string
+          description: Search the latest inspections for a specific vehicle by VIN.
+        amountOfDaysForSearch:
+          type: integer
+          description: Return inspections from the last X days.
+        amountOfHoursForSearch:
+          type: integer
+          description: Return inspections from the last X hours.
+        amountOfInspections:
+          type: integer
+          description: Return the most recent X inspections.
+      anyOf:
+      - required:
+        - siteId
+      - required:
+        - siteGroupId
+      - required:
+        - vin
+    InspectionSummary:
+      type: object
+      properties:
+        inspectionId:
+          type: string
+          description: Unique id of the inspection - use it with the Inspection Details request.
+        siteId:
+          type: string
+          description: Id of the site where the inspection took place.
+        organizationId:
+          type: string
+          description: Id of the organization the site belongs to.
+        inspectedAt:
+          type: string
+          description: Date and time the inspection was scanned.
+        vin:
+          type: string
+          description: Vehicle VIN.
+        year:
+          type: string
+          description: Vehicle model year; may be empty when unavailable.
+        model:
+          type: string
+          description: Vehicle model.
+        make:
+          type: string
+          description: Vehicle make.
+        licensePlate:
+          type: string
+          description: Vehicle license plate.
+        licensePlateUsStateAbbreviation:
+          type: string
+          description: US state abbreviation of the license plate.
+        merchandiseVehicleData:
+          type: object
+          description: Resolved vehicle data (inventory-first); present only once resolved.
+        hasHelios:
+          type: boolean
+          description: True if the inspection includes an undercarriage (Helios) scan.
+        hasArtemis:
+          type: boolean
+          description: True if the inspection includes a tire (Artemis) scan.
+        hasAtlas:
+          type: boolean
+          description: True if the inspection includes an exterior (Atlas) scan.
+        isHeliosModuleInvalid:
+          type: boolean
+          description: True if the undercarriage module is invalid.
+        isArtemisModuleInvalid:
+          type: boolean
+          description: True if the tire module is invalid.
+        isAtlasModuleInvalid:
+          type: boolean
+          description: True if the exterior module is invalid.
+        isScanInvalid:
+          type: boolean
+          description: True if any of the inspection modules is invalid.
+        overviewImage:
+          type: string
+          description: URL of the inspection overview image.
+    PublicLinkRequest:
+      type: object
+      description: Exactly one of inspectionId, vin or uniqueId must be supplied.
+      properties:
+        inspectionId:
+          type: string
+          description: A unique id of the inspection provided by the UVeye system; found in the scan page
+            URL.
+        vin:
+          type: string
+          description: The vehicle VIN provided by the manufacturer; found under vehicle info on the inspection
+            page.
+        uniqueId:
+          type: string
+          description: The barcode of the vehicle (when given); found on the scan page.
+        plainMode:
+          type: boolean
+          default: false
+          description: Set to true to get a plain version of the public link.
+      anyOf:
+      - required:
+        - inspectionId
+      - required:
+        - vin
+      - required:
+        - uniqueId
+    PublicLink:
+      type: object
+      properties:
+        url:
+          type: string
+          description: Public link to the inspection.
+        isHeliosModuleInvalid:
+          type: boolean
+          description: True if the undercarriage inspection image was not uploaded successfully.
+        isArtemisModuleInvalid:
+          type: boolean
+          description: True if any tire inspection images were not uploaded successfully.
+        isAtlasModuleInvalid:
+          type: boolean
+          description: True if the exterior inspection images were not uploaded successfully.
+        isScanInvalid:
+          type: boolean
+          description: True if any of the inspection modules is invalid.
+        expirationDate:
+          type: string
+          description: Date the generated public link stops being available - 30 days after creation.
+        inspectionDate:
+          type: string
+          description: Date the inspection was scanned.
+    QuoteRequest:
+      type: object
+      description: Exactly one of inspectionId, licensePlate, vin or uniqueId must be supplied.
+      properties:
+        inspectionId:
+          type: string
+          description: A unique id of the inspection provided by the UVeye system; found in the scan page
+            URL.
+        vin:
+          type: string
+          description: The vehicle VIN provided by the manufacturer; found under vehicle info on the inspection
+            page.
+        licensePlate:
+          type: string
+          description: License plate of the vehicle; found under vehicle info on the inspection page.
+        uniqueId:
+          type: string
+          description: The barcode of the vehicle (when given); found on the scan page.
+        includeImages:
+          type: boolean
+          description: Include damage image URLs in the response.
+      anyOf:
+      - required:
+        - inspectionId
+      - required:
+        - vin
+      - required:
+        - licensePlate
+      - required:
+        - uniqueId
+    MerchandiseVehicle:
+      type: object
+      required:
+      - vin
+      - make
+      - model
+      - year
+      properties:
+        vin:
+          type: string
+          description: Vehicle VIN.
+        make:
+          type: string
+          description: Vehicle make.
+        model:
+          type: string
+          description: Vehicle model.
+        year:
+          type: integer
+          minimum: 1900
+          maximum: 2100
+          description: Vehicle model year.
+        color:
+          type: string
+          description: Recommended - improves rendered output.
+        body:
+          type: string
+          description: Recommended - improves rendered output.
+        stockNumber:
+          type: string
+          description: UI metadata only; no impact on images.
+        trim:
+          type: string
+          description: UI metadata only.
+        mileage:
+          type: integer
+          description: UI metadata only.
+        type:
+          type: string
+          enum:
+          - NEW
+          - USED
+          description: UI metadata only.
+        sellingPrice:
+          type: number
+          description: UI metadata only.
+        interiorColor:
+          type: string
+          description: UI metadata only.
+        transmission:
+          type: string
+          description: UI metadata only.
+        drivetrain:
+          type: string
+          description: UI metadata only.
+        engine:
+          type: string
+          description: UI metadata only.
+        fuelType:
+          type: string
+          description: UI metadata only.
+        msrp:
+          type: number
+          description: UI metadata only.
+        certified:
+          type: boolean
+          description: UI metadata only.
+        photoCount:
+          type: integer
+          description: UI metadata only.
+        stockInDate:
+          type: string
+          description: UI metadata only. YYYY-MM-DD.
+    MerchandiseAccepted:
+      type: object
+      properties:
+        received:
+          type: boolean
+        requestId:
+          type: string
+          description: Keep this for support - the batch is processed asynchronously.
+        count:
+          type: integer
+webhooks:
+  merchandiseImagesReady:
+    post:
+      operationId: merchandiseImagesReadyWebhook
+      summary: Merchandise images ready (delivered by UVeye to your endpoint)
+      description: 'When a VIN''s merchandise images are ready, UVeye POSTs to your configured webhook
+        URL.
+
+
+        `Authorization: Bearer <customer-bearer-token>` carries the token UVeye was given at onboarding
+        - match it to authenticate UVeye. `X-UVeye-Signature` is an HS256 JWT binding the body (`body_sha256`);
+        verify it for tamper detection, and it carries a `delivery_id` idempotency key (optional).
+
+
+        Acknowledge with 2xx. A non-2xx triggers retry - up to 5 retries / 6 attempts, same `delivery_id`.
+
+
+        The minimum body is shown below (default). A detailed format (opt-in at onboarding) adds `publishStatus`,
+        `coverImage`, `imageCount`, per-image `{ url, category }`, and `modules`.'
+      tags:
+      - Merchandise
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        description: '`Bearer <customer-bearer-token>` - the token UVeye was given at onboarding.'
+      - name: X-UVeye-Signature
+        in: header
+        required: true
+        schema:
+          type: string
+        description: HS256 JWT binding the body (`body_sha256`) and carrying a `delivery_id` idempotency
+          key.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                vin:
+                  type: string
+                publishedAt:
+                  type: string
+                  format: date-time
+                images:
+                  type: array
+                  items:
+                    type: string
+                    format: uri
+            example:
+              vin: 1G1ZD5ST7JF123456
+              publishedAt: '2026-05-12T10:34:00Z'
+              images:
+              - https://<image-cdn-host>/.../front-left.jpg
+              - https://<image-cdn-host>/.../front-right.jpg
+              - https://<image-cdn-host>/.../rear-left.jpg
+              - https://<image-cdn-host>/.../rear-right.jpg
+      responses:
+        2xx:
+          description: Acknowledged. A non-2xx response triggers retry (up to 5 retries / 6 attempts,
+            same delivery_id).

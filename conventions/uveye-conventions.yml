@@ -1,0 +1,120 @@
+generated: '2026-08-02'
+method: searched
+source: https://api.v1.uveye.dev/ (UVeye Public API v1 documentation v1.2, 2026-07-06)
+derived_from: openapi/uveye-public-api-v1-openapi.yml
+summary: >-
+  UVeye Public API v1 is an RPC-flavoured JSON API: every operation except the image fetch is a POST
+  to a verb-named path with the identifier in the body, and the documentation explicitly returns 405
+  "unknown method, please use POST" for anything else. Lookups accept several interchangeable
+  identifiers (inspectionId, vin, licensePlate, uniqueId) with a documented "Missing search criteria"
+  error when none is supplied. There is no pagination, no field expansion and no request-id header.
+  Idempotency semantics exist on the Merchandise surface only.
+style:
+  protocol: HTTPS/JSON
+  shape: RPC over POST (identifier in the request body, not the path)
+  path_naming: verb/resource names at the version root - /inspection, /latest-inspections,
+    /public-link, /inspection-shared, /quote, /image, /merchandise/inventory/vehicles,
+    /merchandise/inventory/sold
+  method_policy: >-
+    POST for all data operations; GET only for /image. Any other method returns 405 with the message
+    "unknown method, please use POST".
+  content_type: application/json (image endpoint returns image/jpeg or image/png)
+authentication:
+  primary:
+    style: api key in header
+    header: uveye-api-key
+    issued_via: Global Keys tab of the UVeye Back Office (https://us.backoffice.uveye.app/)
+    applies_to: [getInspectionDetails, listLatestInspections, createInspectionPublicLink,
+      recordInspectionShared, getQuoteByInspection, getInspectionImage]
+  merchandise:
+    style: http bearer
+    header: 'Authorization: Bearer <merchandise API key>'
+    issued_via: onboarding
+    applies_to: [submitMerchandiseInventory, markMerchandiseVehiclesSold]
+    note: deliberately a separate credential from uveye-api-key
+  oauth: none published
+  see: authentication/uveye-authentication.yml
+identifiers:
+  lookup_keys:
+  - {key: inspectionId, description: 'UVeye inspection id; found in the scan page URL'}
+  - {key: vin, description: manufacturer VIN}
+  - {key: licensePlate, description: vehicle license plate (Inspection Details and Quote only)}
+  - {key: uniqueId, description: 'vehicle barcode, when given'}
+  rule: >-
+    Supply exactly one identifier per request. Which subset is accepted varies by endpoint - Public
+    Link accepts inspectionId/vin/uniqueId, Inspection Details and Quote accept all four, Latest
+    Inspections instead takes a location filter (siteId, siteGroupId or vin).
+  missing_identifier_error: 400 "Missing search criteria"
+idempotency:
+  supported: partial
+  surfaces:
+  - surface: merchandise inventory submission
+    mechanism: content-hash deduplication
+    description: >-
+      Resubmitting the full active inventory is the documented integration pattern (for example every
+      4 hours). Unchanged vehicles are no-ops, deduplicated by content hash, so repeated submission
+      of the same payload is safe and does not re-render imagery.
+    operations: [submitMerchandiseInventory]
+  - surface: merchandise outbound webhook
+    mechanism: delivery_id idempotency key
+    header: X-UVeye-Signature (HS256 JWT claim)
+    description: >-
+      Each webhook delivery carries a delivery_id inside the signed X-UVeye-Signature JWT. Retries of
+      a failed delivery (up to 5 retries / 6 attempts) reuse the same delivery_id, so the receiver can
+      deduplicate. UVeye documents this key as optional to use.
+    direction: inbound to the integrator
+  not_supported:
+    description: >-
+      There is no Idempotency-Key request header on any UVeye endpoint. The read/lookup operations
+      (inspection, latest-inspections, quote, image) are naturally idempotent GET-semantics-over-POST.
+      createInspectionPublicLink and recordInspectionShared have no documented idempotency key.
+    operations: [createInspectionPublicLink, recordInspectionShared]
+pagination:
+  supported: false
+  description: >-
+    listLatestInspections is windowed rather than paginated: pick one of amountOfDaysForSearch,
+    amountOfHoursForSearch or amountOfInspections. There is no cursor, offset, limit or next-page
+    token, and the response is a bare {inspections: []} array with no total or paging envelope.
+  window_parameters: [amountOfDaysForSearch, amountOfHoursForSearch, amountOfInspections]
+filtering:
+  location_filters: [siteId, siteGroupId, vin]
+  response_shaping:
+  - {parameter: alertsOnly, operation: getInspectionDetails, effect: 'return only alert detections, hide warnings'}
+  - {parameter: showTreadPolygons, operation: getInspectionDetails, effect: include tread polygon coordinates}
+  - {parameter: includeImages, operation: getQuoteByInspection, effect: include damage image URLs}
+  - {parameter: plainMode, operation: createInspectionPublicLink, effect: return a plain version of the public link}
+field_expansion: none - the inspection response always returns the full nested module graph
+metadata: >-
+  No general-purpose metadata bag. The Merchandise vehicle object accepts optional UI-only fields
+  (stockNumber, trim, mileage, type, sellingPrice, interiorColor, transmission, drivetrain, engine,
+  fuelType, msrp, certified, photoCount, stockInDate) that are carried for display and have no effect
+  on image rendering.
+request_tracing:
+  request_id_header: none
+  correlation: >-
+    The merchandise 202 response returns a requestId for the batch; UVeye documentation says to keep
+    it for support. No request id is returned on the inspection endpoints.
+versioning:
+  scheme: uri-path
+  current: v1
+  documentation_version: 'v1.2 (2026-07-06)'
+  note: >-
+    The API version (v1) and the documentation version (v1.2) are tracked separately; the changelog
+    versions the documentation. See changelog/uveye-changelog.yml.
+error_envelope:
+  format: proprietary status + message string (not RFC 9457)
+  see: errors/uveye-problem-types.yml
+rate_limiting:
+  headers: none published
+  documented_limits: batch size cap of 100 vehicles per merchandise request (413 above it)
+  see: rate-limits/uveye-rate-limits.yml
+expiry_semantics:
+- {resource: public inspection link, ttl: 30 days from creation, surfaced_as: expirationDate in the response}
+- {resource: image URLs, ttl: 1 hour, remediation: re-request the inspection to obtain fresh image URLs}
+cross_links:
+  authentication: authentication/uveye-authentication.yml
+  errors: errors/uveye-problem-types.yml
+  lifecycle: lifecycle/uveye-lifecycle.yml
+  rate_limits: rate-limits/uveye-rate-limits.yml
+  webhooks: asyncapi/uveye-merchandise-webhooks.yml
+  sandbox: sandbox/uveye-sandbox.yml

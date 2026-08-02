@@ -1,0 +1,69 @@
+generated: '2026-08-02'
+method: searched
+source: https://api.v1.uveye.dev/ (published Postman "Staging" environment and collection description)
+summary: >-
+  UVeye ships a non-production environment and publishes its base URL and one sample inspection id
+  through the Postman collection, but there is no self-service sandbox signup: keys for every
+  environment are issued from the UVeye Back Office (uveye-api-key) or at onboarding (merchandise
+  bearer). There are no magic/test identifiers - a staging call needs a real staging key and real
+  scanned vehicle data.
+self_service: false
+environments:
+- name: Staging
+  published: true
+  base_url: https://api-uveye-playground.web.app/v1/i
+  source: 'Postman environment "Staging" (id 23ced684-a99f-4f00-92aa-b259ee1c9f6b), published with the collection'
+  public_link_host: https://staging.uvpub.uveye.app
+  note: >-
+    The published base_url ends in "i"; endpoint suffixes are appended directly to it, producing
+    paths such as /v1/iinspection and /v1/imerchandise/inventory/vehicles on this host.
+- name: Development
+  published: true
+  base_url: https://api.uveye.dev/v1/
+  source: collection description ("base url for for dev environment is")
+- name: Production-US
+  published: false
+  base_url: null
+  note: >-
+    The documentation instructs integrators to switch the Postman ENVIRONMENT selector to
+    Production-US to reveal the production URLs; that environment is not published anonymously.
+    Production public links are served from https://us.uvpub.uveye.app/.
+credentials:
+  separation: environment-scoped keys, not key-prefix based
+  inspection_api:
+    variable: uveye_api_key
+    header: uveye-api-key
+    type: secret (empty in the published environment)
+    issued_via: Global Keys tab of the UVeye Back Office (https://us.backoffice.uveye.app/)
+  merchandise_api:
+    variable: merchandise_api_key
+    header: 'Authorization: Bearer'
+    issued_via: onboarding
+  test_key_prefix: none published
+  live_vs_test_prefix: none published
+published_test_values:
+- {name: sample_inspection_id, value: 79c0c1d0-f600-413d-87f1-7e2f70d03ecb, environment: Staging,
+   note: 'the only concrete sample identifier UVeye publishes; supplied as a Postman environment variable'}
+magic_values: none published - there are no test VINs, test plates or simulated-damage identifiers
+test_clock: none
+fixtures_and_triggers:
+  description: >-
+    No fixture generator, event trigger or replay tooling is published. The only exercisable loop is
+    the merchandise one - submit inventory, then receive the images-ready webhook at a URL you set.
+  webhook_target_variable: merchandise_webhook_url
+  note: >-
+    The collection exposes a merchandise_webhook_url variable so the documented webhook payload can be
+    mock-sent to your own endpoint from Postman; the webhook request in the collection is documentation
+    of the inbound contract, not a request UVeye expects you to call.
+collection_variables:
+- auth_key_field
+- inspectionId
+- vin
+- licensePlate
+- uniqueId
+- siteId
+- siteGroupId
+- imageKey
+- publicLinkUrl
+- merchandise_api_key
+- merchandise_webhook_url

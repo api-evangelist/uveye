@@ -1,0 +1,58 @@
+generated: '2026-08-02'
+method: derived
+source: openapi/uveye-public-api-v1-openapi.yml
+status: candidate
+summary: >-
+  No official hosted or remote Model Context Protocol server was found for UVeye. Searches covered
+  UVeye's documentation, its GitHub organization (github.com/UVeye, 0 public repositories), the npm
+  registry and public MCP directories; probes for /.well-known/oauth-protected-resource,
+  /.well-known/oauth-authorization-server and an A2A agent card returned 404 on every UVeye host. The
+  tool set below is DERIVED from the UVeye Public API v1 operations as a proposal for an agent-facing
+  surface. It is NOT published by UVeye, and no `MCPServer` pointer is wired into apis.yml for it.
+published: false
+server: null
+transport: null
+auth:
+  note: >-
+    A real UVeye MCP server would need to carry both credentials the API uses - the uveye-api-key
+    header for inspection tools and the merchandise bearer token for the two merchandise tools.
+tools:
+- name: get_inspection_details
+  description: Get the full inspection record for a vehicle by inspection id, VIN, license plate or barcode.
+  source_operation: openapi/uveye-public-api-v1-openapi.yml#getInspectionDetails
+  consequence: read
+- name: list_latest_inspections
+  description: List the most recent inspections for a site, site group or VIN over a days/hours/count window.
+  source_operation: openapi/uveye-public-api-v1-openapi.yml#listLatestInspections
+  consequence: read
+- name: create_inspection_public_link
+  description: Mint a customer-shareable public link to an inspection (expires after 30 days).
+  source_operation: openapi/uveye-public-api-v1-openapi.yml#createInspectionPublicLink
+  consequence: write
+- name: record_inspection_shared
+  description: Record that an inspection's public link was shared with a customer.
+  source_operation: openapi/uveye-public-api-v1-openapi.yml#recordInspectionShared
+  consequence: write
+- name: get_quote_by_inspection
+  description: Get appraisal data for an inspection - offer price, reconditioning cost and damages by car part.
+  source_operation: openapi/uveye-public-api-v1-openapi.yml#getQuoteByInspection
+  consequence: read
+- name: get_inspection_image
+  description: Fetch an inspection image by its signed key (URLs expire after 1 hour).
+  source_operation: openapi/uveye-public-api-v1-openapi.yml#getInspectionImage
+  consequence: read
+- name: submit_merchandise_inventory
+  description: Submit up to 100 dealer inventory vehicles for merchandising image rendering.
+  source_operation: openapi/uveye-public-api-v1-openapi.yml#submitMerchandiseInventory
+  consequence: write
+  requires: merchandise bearer credential
+- name: mark_merchandise_vehicles_sold
+  description: Mark up to 100 VINs sold so UVeye stops merchandising them.
+  source_operation: openapi/uveye-public-api-v1-openapi.yml#markMerchandiseVehiclesSold
+  consequence: write
+  requires: merchandise bearer credential
+notes:
+  input_schemas: >-
+    Each candidate tool would inherit its real input contract from the backing operation's
+    requestBody/parameters in openapi/uveye-public-api-v1-openapi.yml.
+  agentic_access: see agentic-access/uveye-agentic-access.yml for the recommended execution contracts.

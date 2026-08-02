@@ -1,0 +1,81 @@
+generated: '2026-08-02'
+method: probed
+source: live HTTPS probes of every host in apis.yml and every OpenAPI servers[] host
+summary: >-
+  UVeye publishes no /.well-known/ discovery surface. Every canonical path was probed on the
+  marketing host, the API host, the documentation host and the apex developer domain; all returned
+  404. No security.txt, no OIDC/OAuth discovery document (the API is API-key and bearer based, not
+  OAuth), no api-catalog, no ai-plugin.json and no A2A agent card. Absence is recorded data, not a
+  gap in the probe.
+hosts:
+- host: https://uveye.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /llms.txt, status: 404}
+- host: https://www.uveye.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /llms.txt, status: 404}
+- host: https://api.uveye.dev
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /llms.txt, status: 404}
+- host: https://api.v1.uveye.dev
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /llms.txt, status: 404}
+- host: https://uveye.dev
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+contract_discovery:
+  openapi_probes:
+  - {url: 'https://api.v1.uveye.dev/openapi.json', status: 404}
+  - {url: 'https://api.v1.uveye.dev/openapi.yaml', status: 404}
+  - {url: 'https://api.v1.uveye.dev/swagger.json', status: 404}
+  - {url: 'https://api.uveye.dev/openapi.json', status: 404}
+  - {url: 'https://api.uveye.dev/v1/openapi.json', status: 404}
+  - {url: 'https://api.uveye.dev/swagger.json', status: 404}
+  - {url: 'https://api.uveye.dev/api-docs', status: 404}
+  - {url: 'https://api.uveye.dev/docs', status: 404}
+  - {url: 'https://api.uveye.dev/redoc', status: 404}
+  - {url: 'https://uveye.com/openapi.json', status: 404}
+  graphql: not found - no /graphql surface is documented or advertised
+  mcp: not found - no hosted or remote MCP server is published by UVeye
+  a2a: not found - no agent card at either well-known path on any host
+  result: >-
+    The machine-readable contract UVeye actually publishes is a Postman collection served from its
+    own custom-domain Postman documenter at https://api.v1.uveye.dev/ (collection UzBqnQ9W, team
+    6788683, collection id 56a4eeda-8226-4651-a542-b93345bf7ce6, schema
+    https://schema.getpostman.com/json/collection/v2.0.0/collection.json). It is saved verbatim to
+    postman/uveye-public-api-v1-postman-collection.json and the OpenAPI in openapi/ is derived from
+    it.

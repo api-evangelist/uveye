@@ -1,0 +1,77 @@
+generated: '2026-08-02'
+method: searched
+source: https://api.v1.uveye.dev/ (UVeye Public API v1, Merchandise folder, documentation v1.2)
+spec_type: Webhooks
+summary: >-
+  UVeye publishes no AsyncAPI document. It does document one outbound webhook: when a VIN submitted
+  to the Merchandise inventory endpoint has had its multi-angle images rendered, UVeye POSTs a
+  "merchandise images ready" payload to a customer-configured URL. The webhook contract - auth,
+  signature, retry policy and both payload formats - is published in the Merchandise folder of the
+  UVeye Public API v1 Postman documentation, and is modelled in the derived OpenAPI under
+  `webhooks.merchandiseImagesReady`.
+asyncapi_published: false
+webhooks:
+- name: merchandiseImagesReady
+  direction: outbound
+  transport: https
+  method: POST
+  destination: customer-configured webhook URL (set at onboarding)
+  trigger: A VIN's merchandise images have finished rendering.
+  configuration: set at onboarding by UVeye; no self-service webhook management endpoint is published
+  authentication:
+    to_customer:
+      header: Authorization
+      scheme: Bearer
+      description: >-
+        The customer bearer token UVeye was given at onboarding. Match it on receipt to authenticate
+        that the caller is UVeye.
+    signature:
+      header: X-UVeye-Signature
+      algorithm: HS256
+      format: JWT
+      binds: body_sha256
+      description: >-
+        HS256 JWT binding the request body via a body_sha256 claim. Verify it for tamper detection.
+        It also carries a delivery_id, usable as an idempotency key (optional).
+  idempotency:
+    key: delivery_id
+    location: X-UVeye-Signature JWT claim
+    scope: one delivery; retries of the same delivery reuse the same delivery_id
+    optional: true
+  delivery:
+    expected_response: 2xx
+    retry_on: non-2xx
+    max_retries: 5
+    max_attempts: 6
+    note: retries reuse the same delivery_id
+  payloads:
+  - format: minimum
+    default: true
+    fields:
+    - {name: vin, type: string}
+    - {name: publishedAt, type: string, format: date-time}
+    - {name: images, type: array of image URLs}
+    example:
+      vin: '1G1ZD5ST7JF123456'
+      publishedAt: '2026-05-12T10:34:00Z'
+      images:
+      - https://<image-cdn-host>/.../front-left.jpg
+      - https://<image-cdn-host>/.../front-right.jpg
+      - https://<image-cdn-host>/.../rear-left.jpg
+      - https://<image-cdn-host>/.../rear-right.jpg
+  - format: detailed
+    default: false
+    opt_in: at onboarding
+    additional_fields: [publishStatus, coverImage, imageCount, 'images[].url', 'images[].category', modules]
+  related_operations:
+  - openapi/uveye-public-api-v1-openapi.yml#submitMerchandiseInventory
+  - openapi/uveye-public-api-v1-openapi.yml#markMerchandiseVehiclesSold
+  spec_reference: openapi/uveye-public-api-v1-openapi.yml#/webhooks/merchandiseImagesReady
+  further_documentation: >-
+    UVeye references a "Merchandise Integration Guide" on Confluence for the full JWT claim set and
+    verification code. That guide is not publicly reachable and was not harvested.
+event_surface:
+  streaming: none published
+  polling_alternative: >-
+    POST /latest-inspections is the documented discovery mechanism for new inspections (by site,
+    site group or VIN, over a days/hours/count window); there is no inspection-completed webhook.

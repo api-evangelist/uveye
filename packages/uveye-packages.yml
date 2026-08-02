@@ -1,0 +1,31 @@
+generated: '2026-08-02'
+method: searched
+source: registry searches (npm, PyPI, RubyGems, crates.io, Packagist, NuGet, pkg.go.dev) plus the
+  UVeye Public API v1 documentation at https://api.v1.uveye.dev/
+summary: >-
+  No first-party UVeye client library was found in any public package registry. UVeye distributes its
+  API contract as a published Postman collection (https://api.v1.uveye.dev/) rather than as SDKs, and
+  the documentation directs integrators to call the HTTP endpoints directly with a uveye-api-key
+  header. The single npm name match is unattributed and is NOT treated as official.
+packages: []
+unverified:
+- language: javascript
+  registry: npm
+  name: uveye
+  url: https://www.npmjs.com/package/uveye
+  version: 1.0.7
+  official: false
+  note: >-
+    Name match only. Published 2020-02-22 by an individual maintainer (personal gmail address), with
+    no description, no repository, no homepage and no link from UVeye documentation. There is no
+    evidence this is a UVeye-authored client library, so it is recorded here as unverified rather
+    than as a package.
+registries_checked:
+- {registry: npm, query: uveye, result: 1 name match (unverified, see above)}
+- {registry: pypi, query: 'uveye, uveye-api, uveye-sdk', result: 404 - none}
+- {registry: rubygems, query: uveye, result: none}
+- {registry: crates.io, query: uveye, result: none}
+- {registry: packagist, query: uveye, result: none}
+- {registry: nuget, query: uveye, result: none}
+- {registry: pkg.go.dev, query: uveye, result: none}
+- {registry: github, query: 'github.com/UVeye organization', result: '0 public repositories (org exists, created 2020-01-23)'}

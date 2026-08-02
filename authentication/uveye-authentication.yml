@@ -1,0 +1,60 @@
+generated: '2026-08-02'
+method: searched
+source: https://api.v1.uveye.dev/ (UVeye Public API v1 documentation v1.2) + openapi/uveye-public-api-v1-openapi.yml
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+  oauth2_flows: []
+schemes:
+- name: uveyeApiKey
+  type: apiKey
+  in: header
+  parameter: uveye-api-key
+  description: Global API key generated in the Global Keys tab of the UVeye Back Office.
+  sources:
+  - openapi/uveye-public-api-v1-openapi.yml
+- name: merchandiseBearer
+  type: http
+  scheme: bearer
+  description: 'Merchandise API key issued at onboarding, sent as `Authorization: Bearer <merchandise
+    API key>`. Distinct from `uveye-api-key`.'
+  sources:
+  - openapi/uveye-public-api-v1-openapi.yml
+docs: https://api.v1.uveye.dev/
+key_management:
+  inspection_api:
+    header: uveye-api-key
+    issued_via: Global Keys tab of the UVeye Back Office
+    console: https://us.backoffice.uveye.app/
+    rotation: refresh the key in the Back Office; a rotated-out key returns 401 "API key is disabled"
+  merchandise_api:
+    header: 'Authorization: Bearer <merchandise API key>'
+    issued_via: onboarding
+    note: a distinct credential from uveye-api-key; a key not authorized for merchandise returns 401
+operation_coverage:
+  uveyeApiKey:
+  - getInspectionDetails
+  - listLatestInspections
+  - createInspectionPublicLink
+  - recordInspectionShared
+  - getQuoteByInspection
+  - getInspectionImage
+  merchandiseBearer:
+  - submitMerchandiseInventory
+  - markMerchandiseVehiclesSold
+webhook_authentication:
+  direction: UVeye -> integrator
+  bearer: 'Authorization: Bearer <customer-bearer-token> issued at onboarding; match it to authenticate
+    UVeye'
+  signature: X-UVeye-Signature, an HS256 JWT binding body_sha256 and carrying a delivery_id
+  see: asyncapi/uveye-merchandise-webhooks.yml
+oauth:
+  supported: false
+  evidence: no oauth2 securityScheme; /.well-known/openid-configuration and /.well-known/oauth-authorization-server
+    return 404 on every host
+scopes:
+  supported: false
+  note: API keys are not scoped in the published contract; see conventions for the two-credential split
