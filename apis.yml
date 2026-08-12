@@ -32,35 +32,111 @@ tags:
 - Inspection Data
 - Company
 apis:
-- aid: uveye:public-api-v1
-  name: UVeye Public API v1
-  description: 'Third-party access to UVeye vehicle inspection data. Retrieve full inspection records
-    (Artemis tires, Helios undercarriage, Atlas exterior, Apollo interior) by inspection id, VIN,
-    license plate or barcode; discover the latest inspections for a site or site group; mint
-    customer-facing public inspection links that expire after 30 days; pull appraisal/quote data with
-    damages grouped by car part; fetch inspection imagery; and submit dealer inventory to the
-    Merchandise surface, which renders multi-angle imagery and delivers it back over a signed
-    webhook. Most endpoints authenticate with a uveye-api-key header generated in the UVeye Back
-    Office; the Merchandise endpoints use a separate bearer credential issued at onboarding.'
+- aid: uveye:uveye-appraisal-api
+  name: UVeye Appraisal API
+  description: Appraisal / quote data derived from an inspection.
   humanURL: https://api.v1.uveye.dev/
   baseURL: https://api.uveye.dev/v1
   tags:
-  - Vehicle Inspection
-  - Automotive
-  - Inspection Data
-  - Merchandise
   - Appraisal
   properties:
   - type: OpenAPI
-    url: openapi/uveye-public-api-v1-openapi.yml
+    url: openapi/uveye-appraisal-api-openapi.yml
   - type: Documentation
     url: https://api.v1.uveye.dev/
   - type: APIReference
     url: https://api.v1.uveye.dev/
   - type: PostmanCollection
     url: postman/uveye-public-api-v1-postman-collection.json
-  - type: Overlay
-    url: overlays/uveye-public-api-v1-overlay.yaml
+  - type: Webhooks
+    url: asyncapi/uveye-merchandise-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/uveye-problem-types.yml
+  - type: DataModel
+    url: data-model/uveye-data-model.yml
+- aid: uveye:uveye-inspections-api
+  name: UVeye Inspections API
+  description: >-
+    Retrieve vehicle inspection data and the most recent inspections for a site or site group.
+  humanURL: https://api.v1.uveye.dev/
+  baseURL: https://api.uveye.dev/v1
+  tags:
+  - Inspections
+  properties:
+  - type: OpenAPI
+    url: openapi/uveye-inspections-api-openapi.yml
+  - type: Documentation
+    url: https://api.v1.uveye.dev/
+  - type: APIReference
+    url: https://api.v1.uveye.dev/
+  - type: PostmanCollection
+    url: postman/uveye-public-api-v1-postman-collection.json
+  - type: Webhooks
+    url: asyncapi/uveye-merchandise-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/uveye-problem-types.yml
+  - type: DataModel
+    url: data-model/uveye-data-model.yml
+- aid: uveye:uveye-media-api
+  name: UVeye Media API
+  description: Inspection imagery.
+  humanURL: https://api.v1.uveye.dev/
+  baseURL: https://api.uveye.dev/v1
+  tags:
+  - Media
+  properties:
+  - type: OpenAPI
+    url: openapi/uveye-media-api-openapi.yml
+  - type: Documentation
+    url: https://api.v1.uveye.dev/
+  - type: APIReference
+    url: https://api.v1.uveye.dev/
+  - type: PostmanCollection
+    url: postman/uveye-public-api-v1-postman-collection.json
+  - type: Webhooks
+    url: asyncapi/uveye-merchandise-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/uveye-problem-types.yml
+  - type: DataModel
+    url: data-model/uveye-data-model.yml
+- aid: uveye:uveye-merchandise-api
+  name: UVeye Merchandise API
+  description: Submit dealer inventory for merchandising and mark vehicles sold.
+  humanURL: https://api.v1.uveye.dev/
+  baseURL: https://api.uveye.dev/v1
+  tags:
+  - Merchandise
+  properties:
+  - type: OpenAPI
+    url: openapi/uveye-merchandise-api-openapi.yml
+  - type: Documentation
+    url: https://api.v1.uveye.dev/
+  - type: APIReference
+    url: https://api.v1.uveye.dev/
+  - type: PostmanCollection
+    url: postman/uveye-public-api-v1-postman-collection.json
+  - type: Webhooks
+    url: asyncapi/uveye-merchandise-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/uveye-problem-types.yml
+  - type: DataModel
+    url: data-model/uveye-data-model.yml
+- aid: uveye:uveye-public-links-api
+  name: UVeye Public Links API
+  description: Generate and record customer-facing public inspection links.
+  humanURL: https://api.v1.uveye.dev/
+  baseURL: https://api.uveye.dev/v1
+  tags:
+  - Public Links
+  properties:
+  - type: OpenAPI
+    url: openapi/uveye-public-links-api-openapi.yml
+  - type: Documentation
+    url: https://api.v1.uveye.dev/
+  - type: APIReference
+    url: https://api.v1.uveye.dev/
+  - type: PostmanCollection
+    url: postman/uveye-public-api-v1-postman-collection.json
   - type: Webhooks
     url: asyncapi/uveye-merchandise-webhooks.yml
   - type: ErrorCatalog
@@ -73,6 +149,10 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: MCPServer
+  url: mcp/uveye-mcp.yml
+- type: Overlay
+  url: overlays/uveye-public-api-v1-overlay.yaml
 - type: AgenticAccess
   url: agentic-access/uveye-agentic-access.yml
 - type: DomainSecurity
