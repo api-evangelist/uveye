@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "UVeye Public API v1 Media API",
+    "version": "1.2"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "uveye-api-key",
+      "value": "{{uveye-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Media",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get an inspection image",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.uveye.dev/v1/image",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "query",
+                "description": "The image key, taken from an image URL returned by another endpoint."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "uveye-api-key",
+              "value": "{{uveye-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns an image acquired during a UVeye inspection, identified by a `key` query parameter. You normally do not build this request yourself - image URLs returned inside other endpoints' responses (overviewImage, coverImage, tire treadImage/wallImage, detection image/croppedImage, Atlas coverImages/animatedFrames) already include the `?key=` parameter; use the returned URL as-is. Image URLs are valid for 1 hour unless stated otherwise."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

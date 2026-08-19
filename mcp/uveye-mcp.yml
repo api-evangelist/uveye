@@ -2,19 +2,17 @@ generated: '2026-08-02'
 method: derived
 source: openapi/uveye-public-api-v1-openapi.yml
 status: candidate
-summary: >-
-  No official hosted or remote Model Context Protocol server was found for UVeye. Searches covered
-  UVeye's documentation, its GitHub organization (github.com/UVeye, 0 public repositories), the npm
-  registry and public MCP directories; probes for /.well-known/oauth-protected-resource,
-  /.well-known/oauth-authorization-server and an A2A agent card returned 404 on every UVeye host. The
-  tool set below is DERIVED from the UVeye Public API v1 operations as a proposal for an agent-facing
-  surface. It is NOT published by UVeye, and no `MCPServer` pointer is wired into apis.yml for it.
+summary: No official hosted or remote Model Context Protocol server was found for UVeye. Searches covered
+  UVeye's documentation, its GitHub organization (github.com/UVeye, 0 public repositories), the npm registry
+  and public MCP directories; probes for /.well-known/oauth-protected-resource, /.well-known/oauth-authorization-server
+  and an A2A agent card returned 404 on every UVeye host. The tool set below is DERIVED from the UVeye
+  Public API v1 operations as a proposal for an agent-facing surface. It is NOT published by UVeye, and
+  no `MCPServer` pointer is wired into apis.yml for it.
 published: false
 server: null
 transport: null
 auth:
-  note: >-
-    A real UVeye MCP server would need to carry both credentials the API uses - the uveye-api-key
+  note: A real UVeye MCP server would need to carry both credentials the API uses - the uveye-api-key
     header for inspection tools and the merchandise bearer token for the two merchandise tools.
 tools:
 - name: get_inspection_details
@@ -22,7 +20,8 @@ tools:
   source_operation: openapi/uveye-public-api-v1-openapi.yml#getInspectionDetails
   consequence: read
 - name: list_latest_inspections
-  description: List the most recent inspections for a site, site group or VIN over a days/hours/count window.
+  description: List the most recent inspections for a site, site group or VIN over a days/hours/count
+    window.
   source_operation: openapi/uveye-public-api-v1-openapi.yml#listLatestInspections
   consequence: read
 - name: create_inspection_public_link
@@ -34,7 +33,8 @@ tools:
   source_operation: openapi/uveye-public-api-v1-openapi.yml#recordInspectionShared
   consequence: write
 - name: get_quote_by_inspection
-  description: Get appraisal data for an inspection - offer price, reconditioning cost and damages by car part.
+  description: Get appraisal data for an inspection - offer price, reconditioning cost and damages by
+    car part.
   source_operation: openapi/uveye-public-api-v1-openapi.yml#getQuoteByInspection
   consequence: read
 - name: get_inspection_image
@@ -52,7 +52,12 @@ tools:
   consequence: write
   requires: merchandise bearer credential
 notes:
-  input_schemas: >-
-    Each candidate tool would inherit its real input contract from the backing operation's
+  input_schemas: Each candidate tool would inherit its real input contract from the backing operation's
     requestBody/parameters in openapi/uveye-public-api-v1-openapi.yml.
   agentic_access: see agentic-access/uveye-agentic-access.yml for the recommended execution contracts.
+deployment:
+  mode: none
+  verified: derived
+  tools: 8
+  checked: '2026-08-12'
+  source: catalog MCP census

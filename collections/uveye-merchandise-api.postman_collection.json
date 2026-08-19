@@ -1,0 +1,565 @@
+{
+  "item": [
+    {
+      "id": "788a92df-f041-492f-a9c4-583e5029e119",
+      "name": "Merchandise",
+      "description": {
+        "content": "Submit dealer inventory for merchandising and mark vehicles sold.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a61c7ab6-cf48-411e-8229-75ad142e8085",
+          "name": "Submit inventory",
+          "request": {
+            "name": "Submit inventory",
+            "description": {
+              "content": "Push VINs plus basic vehicle data; UVeye scans, renders multi-angle images and pushes them back to your webhook. Batch limit is 100 vehicles per request (more returns 413). Resubmit your full active inventory periodically (for example every 4 hours) - unchanged vehicles are no-ops, deduplicated by content hash. Processed asynchronously: there is no per-VIN validation in the response, and a malformed or incomplete VIN is excluded and simply never produces a webhook.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "merchandise",
+                "inventory",
+                "vehicles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehicles\": [\n    {\n      \"vin\": \"<string>\",\n      \"make\": \"<string>\",\n      \"model\": \"<string>\",\n      \"year\": \"<integer>\",\n      \"color\": \"<string>\",\n      \"body\": \"<string>\",\n      \"stockNumber\": \"<string>\",\n      \"trim\": \"<string>\",\n      \"mileage\": \"<integer>\",\n      \"type\": \"<string>\",\n      \"sellingPrice\": \"<number>\",\n      \"interiorColor\": \"<string>\",\n      \"transmission\": \"<string>\",\n      \"drivetrain\": \"<string>\",\n      \"engine\": \"<string>\",\n      \"fuelType\": \"<string>\",\n      \"msrp\": \"<number>\",\n      \"certified\": \"<boolean>\",\n      \"photoCount\": \"<integer>\",\n      \"stockInDate\": \"<string>\"\n    },\n    {\n      \"vin\": \"<string>\",\n      \"make\": \"<string>\",\n      \"model\": \"<string>\",\n      \"year\": \"<integer>\",\n      \"color\": \"<string>\",\n      \"body\": \"<string>\",\n      \"stockNumber\": \"<string>\",\n      \"trim\": \"<string>\",\n      \"mileage\": \"<integer>\",\n      \"type\": \"<string>\",\n      \"sellingPrice\": \"<number>\",\n      \"interiorColor\": \"<string>\",\n      \"transmission\": \"<string>\",\n      \"drivetrain\": \"<string>\",\n      \"engine\": \"<string>\",\n      \"fuelType\": \"<string>\",\n      \"msrp\": \"<number>\",\n      \"certified\": \"<boolean>\",\n      \"photoCount\": \"<integer>\",\n      \"stockInDate\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c79776df-7a42-47f4-9d91-5b5c343bdd44",
+              "name": "Accepted for asynchronous processing.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "merchandise",
+                    "inventory",
+                    "vehicles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vehicles\": [\n    {\n      \"vin\": \"1G1ZD5ST7JF123456\",\n      \"make\": \"Chevrolet\",\n      \"model\": \"Malibu\",\n      \"year\": 2024,\n      \"color\": \"Silver\",\n      \"body\": \"Sedan\",\n      \"stockNumber\": \"ST-12345\",\n      \"mileage\": 12500,\n      \"type\": \"USED\",\n      \"sellingPrice\": 21500\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"received\": true,\n  \"requestId\": \"f1a3b2c5-8e9d-4a6f-9c8e-1d2b3a4e5f6c\",\n  \"count\": 78\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f07e1310-59a3-49b8-bc84-6012d788b9bc",
+              "name": "Bad Request - malformed body or a missing required field.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "merchandise",
+                    "inventory",
+                    "vehicles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vehicles\": [\n    {\n      \"vin\": \"1G1ZD5ST7JF123456\",\n      \"make\": \"Chevrolet\",\n      \"model\": \"Malibu\",\n      \"year\": 2024,\n      \"color\": \"Silver\",\n      \"body\": \"Sedan\",\n      \"stockNumber\": \"ST-12345\",\n      \"mileage\": 12500,\n      \"type\": \"USED\",\n      \"sellingPrice\": 21500\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5e213a80-b611-4bf6-aeed-de6b8dc5d4b3",
+              "name": "Unauthorized - the merchandise key is missing, invalid, disabled, or not authorized for merchandise.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "merchandise",
+                    "inventory",
+                    "vehicles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vehicles\": [\n    {\n      \"vin\": \"1G1ZD5ST7JF123456\",\n      \"make\": \"Chevrolet\",\n      \"model\": \"Malibu\",\n      \"year\": 2024,\n      \"color\": \"Silver\",\n      \"body\": \"Sedan\",\n      \"stockNumber\": \"ST-12345\",\n      \"mileage\": 12500,\n      \"type\": \"USED\",\n      \"sellingPrice\": 21500\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "86598f27-daeb-4687-bcc1-8372cc22f583",
+              "name": "Payload Too Large - more than 100 vehicles in a single request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "merchandise",
+                    "inventory",
+                    "vehicles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vehicles\": [\n    {\n      \"vin\": \"1G1ZD5ST7JF123456\",\n      \"make\": \"Chevrolet\",\n      \"model\": \"Malibu\",\n      \"year\": 2024,\n      \"color\": \"Silver\",\n      \"body\": \"Sedan\",\n      \"stockNumber\": \"ST-12345\",\n      \"mileage\": 12500,\n      \"type\": \"USED\",\n      \"sellingPrice\": 21500\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bd2f15b2-068a-41ab-bed0-0e6f7e2eb31d",
+          "name": "Mark vehicles sold",
+          "request": {
+            "name": "Mark vehicles sold",
+            "description": {
+              "content": "Mark vehicles sold so UVeye stops merchandising them. Call this explicitly when a VIN sells - v1 does not auto-detect sold vehicles from their absence in a resubmitted inventory. To bring a sold VIN back, resubmit it via Submit inventory. Same 100-vehicle batch limit.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "merchandise",
+                "inventory",
+                "sold"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vins\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "da6d0e29-e0b8-47e3-8581-b356b71cbfe7",
+              "name": "Accepted for asynchronous processing.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "merchandise",
+                    "inventory",
+                    "sold"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vins\": [\n    \"1G1ZD5ST7JF123456\",\n    \"1HGCM82633A004352\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"received\": true,\n  \"requestId\": \"a7c9e1d3-4b6f-4c2a-8e1d-9f3b2a4c6d8e\",\n  \"count\": 2\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f8d1c3ee-04fc-440b-9d1d-ab7de6f5135a",
+              "name": "Bad Request - missing/empty `vins` or a non-string entry.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "merchandise",
+                    "inventory",
+                    "sold"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vins\": [\n    \"1G1ZD5ST7JF123456\",\n    \"1HGCM82633A004352\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3aea6339-6f88-4962-8133-a63eb3c56bad",
+              "name": "Unauthorized - the merchandise key is missing, invalid, disabled, or not authorized for merchandise.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "merchandise",
+                    "inventory",
+                    "sold"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vins\": [\n    \"1G1ZD5ST7JF123456\",\n    \"1HGCM82633A004352\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ade38a3f-5671-4cb4-86aa-56d608f1d7cc",
+              "name": "Payload Too Large - more than 100 vehicles in a single request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "merchandise",
+                    "inventory",
+                    "sold"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"vins\": [\n    \"1G1ZD5ST7JF123456\",\n    \"1HGCM82633A004352\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.uveye.dev/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "uveye-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "182c3939-387e-43d9-bcfe-e301527407ae",
+    "name": "UVeye Public API v1 Merchandise API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Allows third-party access to UVeye's vehicle inspection data. Inspections are produced by UVeye's scanning systems and exposed through four modules: **Artemis** (tires), **Helios** (undercarriage), **Atlas** (exterior) and **Apollo** (interior). The API also carries the **Merchandise** surface, which accepts a dealer's vehicle inventory and pushes rendered multi-angle imagery back over a webhook.\n\nAll data provided is confidential and may not be used in any way without explicit permission from UVeye.\n\nMost endpoints authenticate with a `uveye-api-key` header, generated in the Global Keys tab of the UVeye Back Office. The Merchandise endpoints use a separate credential sent as `Authorization: Bearer <merchandise API key>`, issued at onboarding.\n\nThis document is DERIVED by API Evangelist from UVeye's own published Postman collection (documentation version v1.2, 2026-07-06) at https://api.v1.uveye.dev/. It is not published by UVeye.\n\nContact Support:\n Name: UVeye Customer Support",
+      "type": "text/plain"
+    }
+  }
+}

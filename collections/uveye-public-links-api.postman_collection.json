@@ -1,0 +1,600 @@
+{
+  "item": [
+    {
+      "id": "575f8e25-0021-4124-9f18-61042b088faa",
+      "name": "Public Links",
+      "description": {
+        "content": "Generate and record customer-facing public inspection links.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "632a71c5-9659-4dcc-aa5e-3e317ed26779",
+          "name": "Create an inspection public link",
+          "request": {
+            "name": "Create an inspection public link",
+            "description": {
+              "content": "Returns a shareable public link to an inspection. Public inspection links expire 30 days after they are generated; the exact expiry is returned in `expirationDate`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "public-link"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "uveye-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b3a6d7c3-47f1-42f5-86bc-c9ccfce2af72",
+              "name": "The public link.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "public-link"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inspectionId\": \"79c0c1d0-f600-413d-87f1-7e2f70d03ecb\",\n  \"plainMode\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"url\": \"string\",\n  \"isHeliosModuleInvalid\": true,\n  \"isArtemisModuleInvalid\": false,\n  \"isAtlasModuleInvalid\": false,\n  \"isScanInvalid\": false,\n  \"expirationDate\": \"string\",\n  \"inspectionDate\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e2425a8c-0e9e-4fcc-9f91-76a12e4cd6ae",
+              "name": "Bad Request - Request failed, or required search criteria are missing from the request body.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "public-link"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inspectionId\": \"79c0c1d0-f600-413d-87f1-7e2f70d03ecb\",\n  \"plainMode\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "18ee32fa-ef31-4a2b-a924-ba3c36a091b4",
+              "name": "Unauthorized - `Invalid API key` or `API key is disabled`. Refresh the key in the UVeye Back Office and resend it in the `uveye-api-key` header.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "public-link"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inspectionId\": \"79c0c1d0-f600-413d-87f1-7e2f70d03ecb\",\n  \"plainMode\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a113f9a9-80ce-4f4f-b496-ee171100b7fc",
+              "name": "Not Found - Inspection not found - the inspection expired, or the supplied identifier is wrong.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "public-link"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inspectionId\": \"79c0c1d0-f600-413d-87f1-7e2f70d03ecb\",\n  \"plainMode\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cfb840a8-7b16-4870-a4ff-e9539cb394c6",
+              "name": "Method Not Allowed - `unknown method, please use POST` - the endpoint only accepts POST.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "public-link"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inspectionId\": \"79c0c1d0-f600-413d-87f1-7e2f70d03ecb\",\n  \"plainMode\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "427d688e-2088-4e55-beaf-0ecdfbaf9170",
+          "name": "Record that an inspection was shared",
+          "request": {
+            "name": "Record that an inspection was shared",
+            "description": {
+              "content": "Records that an inspection's public link was shared with a customer. Call this after sending a public link so the share is logged in the UVeye system. Returns 200 with an empty body on success.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "inspection-shared"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "uveye-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"inspectionId\": \"<string>\",\n  \"publicLinkUrl\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "44e099d0-1d02-4fdc-93b0-c8c3cc2f4873",
+              "name": "The share was recorded. Empty body.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inspection-shared"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inspectionId\": \"1234567890\",\n  \"publicLinkUrl\": \"https://us.uvpub.uveye.app/public/ABCDEF123456\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7c7d703a-0a5e-41f5-9fc6-35112911df34",
+              "name": "Bad Request - inspectionId is missing or the request is malformed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inspection-shared"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inspectionId\": \"1234567890\",\n  \"publicLinkUrl\": \"https://us.uvpub.uveye.app/public/ABCDEF123456\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d6d7a7c5-3c1a-4800-a4b1-2e5c927ab13e",
+              "name": "Unauthorized - `Invalid API key` or `API key is disabled`. Refresh the key in the UVeye Back Office and resend it in the `uveye-api-key` header.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inspection-shared"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inspectionId\": \"1234567890\",\n  \"publicLinkUrl\": \"https://us.uvpub.uveye.app/public/ABCDEF123456\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f32cee96-b505-473a-8810-8cda05bb5f67",
+              "name": "Method Not Allowed - `unknown method, please use POST` - the endpoint only accepts POST.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inspection-shared"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inspectionId\": \"1234567890\",\n  \"publicLinkUrl\": \"https://us.uvpub.uveye.app/public/ABCDEF123456\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.uveye.dev/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "uveye-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "2debc1a1-727e-4864-98ef-34cda8194a57",
+    "name": "UVeye Public API v1 Public Links API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Allows third-party access to UVeye's vehicle inspection data. Inspections are produced by UVeye's scanning systems and exposed through four modules: **Artemis** (tires), **Helios** (undercarriage), **Atlas** (exterior) and **Apollo** (interior). The API also carries the **Merchandise** surface, which accepts a dealer's vehicle inventory and pushes rendered multi-angle imagery back over a webhook.\n\nAll data provided is confidential and may not be used in any way without explicit permission from UVeye.\n\nMost endpoints authenticate with a `uveye-api-key` header, generated in the Global Keys tab of the UVeye Back Office. The Merchandise endpoints use a separate credential sent as `Authorization: Bearer <merchandise API key>`, issued at onboarding.\n\nThis document is DERIVED by API Evangelist from UVeye's own published Postman collection (documentation version v1.2, 2026-07-06) at https://api.v1.uveye.dev/. It is not published by UVeye.\n\nContact Support:\n Name: UVeye Customer Support",
+      "type": "text/plain"
+    }
+  }
+}

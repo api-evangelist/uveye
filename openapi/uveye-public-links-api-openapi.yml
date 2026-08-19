@@ -1,0 +1,176 @@
+openapi: 3.2.0
+info:
+  title: UVeye Public API v1 Public Links API
+  version: '1.2'
+  summary: Third-party access to UVeye automated vehicle-inspection data.
+  description: 'Allows third-party access to UVeye''s vehicle inspection data. Inspections are produced by UVeye''s scanning systems and exposed through four modules: **Artemis** (tires), **Helios** (undercarriage), **Atlas** (exterior) and **Apollo** (interior). The API also carries the **Merchandise** surface, which accepts a dealer''s vehicle inventory and pushes rendered multi-angle imagery back over a webhook.
+
+
+    All data provided is confidential and may not be used in any way without explicit permission from UVeye.
+
+
+    Most endpoints authenticate with a `uveye-api-key` header, generated in the Global Keys tab of the UVeye Back Office. The Merchandise endpoints use a separate credential sent as `Authorization: Bearer <merchandise API key>`, issued at onboarding.
+
+
+    This document is DERIVED by API Evangelist from UVeye''s own published Postman collection (documentation version v1.2, 2026-07-06) at https://api.v1.uveye.dev/. It is not published by UVeye.'
+  contact:
+    name: UVeye Customer Support
+    url: https://uveye.com/customer-support/
+  x-origin:
+  - format: postman
+    version: 2.0.0
+    url: https://api.v1.uveye.dev/
+    converter:
+      name: api-evangelist enrichment pipeline
+      version: local-v1
+servers:
+- url: https://api.uveye.dev/v1
+  description: Development environment (base URL published in the API documentation).
+- url: https://api-uveye-playground.web.app/v1/i
+  description: Staging / playground environment (base_url from the published Postman Staging environment).
+security:
+- uveyeApiKey: []
+tags:
+- name: Public Links
+  description: Generate and record customer-facing public inspection links.
+paths:
+  /public-link:
+    post:
+      operationId: createInspectionPublicLink
+      summary: Create an inspection public link
+      description: Returns a shareable public link to an inspection. Public inspection links expire 30 days after they are generated; the exact expiry is returned in `expirationDate`.
+      tags:
+      - Public Links
+      security:
+      - uveyeApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicLinkRequest'
+            examples:
+              byInspectionId:
+                value:
+                  inspectionId: 79c0c1d0-f600-413d-87f1-7e2f70d03ecb
+                  plainMode: false
+      responses:
+        '200':
+          description: The public link.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicLink'
+              example: null
+        '400':
+          description: Bad Request - Request failed, or required search criteria are missing from the request body.
+        '401':
+          description: Unauthorized - `Invalid API key` or `API key is disabled`. Refresh the key in the UVeye Back Office and resend it in the `uveye-api-key` header.
+        '404':
+          description: Not Found - Inspection not found - the inspection expired, or the supplied identifier is wrong.
+        '405':
+          description: Method Not Allowed - `unknown method, please use POST` - the endpoint only accepts POST.
+  /inspection-shared:
+    post:
+      operationId: recordInspectionShared
+      summary: Record that an inspection was shared
+      description: Records that an inspection's public link was shared with a customer. Call this after sending a public link so the share is logged in the UVeye system. Returns 200 with an empty body on success.
+      tags:
+      - Public Links
+      security:
+      - uveyeApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - inspectionId
+              properties:
+                inspectionId:
+                  type: string
+                  description: Unique id of the inspection that was shared.
+                publicLinkUrl:
+                  type: string
+                  description: The public inspection link that was sent to the customer.
+            examples:
+              withLink:
+                value:
+                  inspectionId: '1234567890'
+                  publicLinkUrl: https://us.uvpub.uveye.app/public/ABCDEF123456
+              idOnly:
+                value:
+                  inspectionId: '1234567890'
+      responses:
+        '200':
+          description: The share was recorded. Empty body.
+        '400':
+          description: Bad Request - inspectionId is missing or the request is malformed.
+        '401':
+          description: Unauthorized - `Invalid API key` or `API key is disabled`. Refresh the key in the UVeye Back Office and resend it in the `uveye-api-key` header.
+        '405':
+          description: Method Not Allowed - `unknown method, please use POST` - the endpoint only accepts POST.
+components:
+  schemas:
+    PublicLink:
+      type: object
+      properties:
+        url:
+          type: string
+          description: Public link to the inspection.
+        isHeliosModuleInvalid:
+          type: boolean
+          description: True if the undercarriage inspection image was not uploaded successfully.
+        isArtemisModuleInvalid:
+          type: boolean
+          description: True if any tire inspection images were not uploaded successfully.
+        isAtlasModuleInvalid:
+          type: boolean
+          description: True if the exterior inspection images were not uploaded successfully.
+        isScanInvalid:
+          type: boolean
+          description: True if any of the inspection modules is invalid.
+        expirationDate:
+          type: string
+          description: Date the generated public link stops being available - 30 days after creation.
+        inspectionDate:
+          type: string
+          description: Date the inspection was scanned.
+    PublicLinkRequest:
+      type: object
+      description: Exactly one of inspectionId, vin or uniqueId must be supplied.
+      properties:
+        inspectionId:
+          type: string
+          description: A unique id of the inspection provided by the UVeye system; found in the scan page URL.
+        vin:
+          type: string
+          description: The vehicle VIN provided by the manufacturer; found under vehicle info on the inspection page.
+        uniqueId:
+          type: string
+          description: The barcode of the vehicle (when given); found on the scan page.
+        plainMode:
+          type: boolean
+          default: false
+          description: Set to true to get a plain version of the public link.
+      anyOf:
+      - required:
+        - inspectionId
+      - required:
+        - vin
+      - required:
+        - uniqueId
+  securitySchemes:
+    uveyeApiKey:
+      type: apiKey
+      in: header
+      name: uveye-api-key
+      description: Global API key generated in the Global Keys tab of the UVeye Back Office.
+    merchandiseBearer:
+      type: http
+      scheme: bearer
+      description: 'Merchandise API key issued at onboarding, sent as `Authorization: Bearer <merchandise API key>`. Distinct from `uveye-api-key`.'
+externalDocs:
+  description: UVeye Public API v1 documentation (Postman)
+  url: https://api.v1.uveye.dev/

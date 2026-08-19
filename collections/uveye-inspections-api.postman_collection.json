@@ -1,0 +1,655 @@
+{
+  "item": [
+    {
+      "id": "b163062a-9c61-4326-abda-33205cc953e6",
+      "name": "Inspections",
+      "description": {
+        "content": "Retrieve vehicle inspection data and the most recent inspections for a site or site group.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "98cbfdd3-5e8d-4e0c-81c3-6d4c555be708",
+          "name": "Get inspection details",
+          "request": {
+            "name": "Get inspection details",
+            "description": {
+              "content": "Returns the full inspection record for a vehicle. One of `inspectionId`, `vin`, `licensePlate` or `uniqueId` must be supplied. The response nests the Artemis (tires), Helios (undercarriage), Atlas (exterior) and Apollo (interior) module objects.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "inspection"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "uveye-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "cdad3551-bb5a-4591-8e18-06a5135b3b1e",
+              "name": "The inspection record.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inspection"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inspectionId\": \"79c0c1d0-f600-413d-87f1-7e2f70d03ecb\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"inspectionId\": \"8b14a050-713c-4cb5-bbea-4eed7e05a376\",\n  \"artemis\": {\n    \"leftFront\": {\n      \"treadImage\": \"https://staging.api.uveye.app/v1/image?key=WGP6HmH74NVV2U9DIyGk\",\n      \"wallImage\": \"https://staging.api.uveye.app/v1/image?key=biyzj84gqGtf0cEL48FQ\",\n      \"treadDetections\": [],\n      \"wallDetections\": [],\n      \"brand\": \"\",\n      \"dot\": \"\",\n      \"tireAge\": \"\",\n      \"pressure\": \"\",\n      \"size\": \"\",\n      \"speedAndLoad\": \"\",\n      \"unevenTreadsWearDetected\": null,\n      \"wornTireDetected\": \"\",\n      \"isMountingCorrect\": null,\n      \"isAllSeasonPresent\": null,\n      \"isSpeedAndLoadNormal\": null,\n      \"grooves\": []\n    },\n    \"leftRear\": {\n      \"treadImage\": \"https://staging.api.uveye.app/v1/image?key=hDkAkn9Uwm0eOwum4DUO\",\n      \"wallImage\": \"https://staging.api.uveye.app/v1/image?key=oM5zL0ztwFYvd8ikqwBN\",\n      \"treadDetections\": [],\n      \"wallDetections\": [],\n      \"brand\": \"\",\n      \"dot\": \"\",\n      \"tireAge\": \"\",\n      \"pressure\": \"\",\n      \"size\": \"\",\n      \"speedAndLoad\": \"\",\n      \"unevenTreadsWearDetected\": null,\n      \"wornTireDetected\": \"\",\n      \"isMountingCorrect\": null,\n      \"isAllSeasonPresent\": null,\n      \"isSpeedAndLoadNormal\": null,\n      \"grooves\": []\n    },\n    \"rightFront\": {\n      \"treadImage\": \"https://staging.api.uveye.app/v1/image?key=boYhKvRao57Cb0lmCSCT\",\n      \"wallImage\": \"https://staging.api.uveye.app/v1/image?key=Jis7NFgxkaFwFbXfDzIv\",\n      \"treadDetections\": [],\n      \"wallDetections\": [],\n      \"brand\": \"\",\n      \"dot\": \"\",\n      \"tireAge\": \"\",\n      \"pressure\": \"\",\n      \"size\": \"\",\n      \"speedAndLoad\": \"\",\n      \"unevenTreadsWearDetected\": null,\n      \"wornTireDetected\": \"\",\n      \"isMountingCorrect\": null,\n      \"isAllSeasonPresent\": null,\n      \"isSpeedAndLoadNormal\": null,\n      \"grooves\": []\n    },\n    \"rightRear\": {\n      \"treadImage\": \"https://staging.api.uveye.app/v1/image?key=IXjyBMmDP9JyDVTpyDQN\",\n      \"wallImage\": \"https://staging.api.uveye.app/v1/image?key=d0hsklrrquyCoXF6CnB1\",\n      \"treadDetections\": [],\n      \"wallDetections\": [],\n      \"brand\": \"\",\n      \"dot\": \"\",\n      \"tireAge\": \"\",\n      \"pressure\": \"\",\n      \"size\": \"\",\n      \"speedAndLoad\": \"\",\n      \"unevenTreadsWearDetected\": null,\n      \"wornTireDetected\": \"\",\n      \"isMountingCorrect\": null,\n      \"isAllSeasonPresent\": null,\n      \"isSpeedAndLoadNormal\": null,\n      \"grooves\": []\n    }\n  },\n  \"helios\": {\n    \"undercarriageImage\": \"https://staging.api.uveye.app/v1/image?key=OG7kRrzYXNby8xEmmzFc\",\n    \"detections\": []\n  },\n  \"atlas\": {\n    \"detections\": [],\n    \"coverImages\": {\n      \"leftFront\": \"\",\n      \"rightFront\": \"\",\n      \"leftRear\": \"\",\n      \"rightRear\": \"\"\n    },\n    \"animatedFrames\": {\n      \"left\": [\n        \"https://staging.api.uveye.app/v1/image?key=d1VMfKboj7RP9zIECrJP\",\n        \"https://staging.api.uveye.app/v1/image?key=DzCqseYc3eD7dy68PSvT\"\n      ],\n      \"top\": [\n        \"https://staging.api.uveye.app/v1/image?key=03lRIemHCADHmmZvMwlM\",\n        \"https://staging.api.uveye.app/v1/image?key=cR7KydHigOnEoLUW73o5\"\n      ],\n      \"right\": [\n        \"https://staging.api.uveye.app/v1/image?key=SrCZGNaqUHMIHM92wlFd\",\n        \"https://staging.api.uveye.app/v1/image?key=P0EWc6G49YXtlsIm7uZL\"\n      ]\n    }\n  },\n  \"overviewImage\": \"\",\n  \"coverImage\": \"\",\n  \"organizationId\": \"GoGP0TEVU6YVBXkSyb2e_mirror\",\n  \"siteId\": \"WwiWSdfhyWiMSOXfKKDx_mirror\",\n  \"inspectedAt\": \"2025-12-01T23:44:09.000Z\",\n  \"licensePlate\": \"DZ58SE\",\n  \"licensePlateUsStateAbbreviation\": \"FL\",\n  \"vin\": \"3N1AB8CV9SY330347\",\n  \"year\": \"2025\",\n  \"numberOfCylinders\": null,\n  \"fuelType\": \"Gasoline\",\n  \"bodyType\": \"Sedan/Saloon\",\n  \"make\": \"NISSAN\",\n  \"model\": \"Sentra\",\n  \"trim\": \"SV\",\n  \"cabSubTrim\": \"\",\n  \"bedSubTrim\": \"\",\n  \"doorCount\": 4,\n  \"exteriorColor\": \"Black\",\n  \"engineDisplacement\": \"2000\",\n  \"uniqueId\": \"\",\n  \"spareTireInfo\": \"\",\n  \"keyType\": \"\",\n  \"isArtemisModuleInvalid\": false,\n  \"isAtlasModuleInvalid\": false,\n  \"isHeliosModuleInvalid\": false,\n  \"isScanInvalid\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "83a8dae2-1332-44ee-b7b6-e425830d5044",
+              "name": "Bad Request - Request failed, or required search criteria are missing from the request body.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inspection"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inspectionId\": \"79c0c1d0-f600-413d-87f1-7e2f70d03ecb\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3dac2049-13a0-4f7a-9cfd-9f3e26caacbb",
+              "name": "Unauthorized - `Invalid API key` or `API key is disabled`. Refresh the key in the UVeye Back Office and resend it in the `uveye-api-key` header.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inspection"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inspectionId\": \"79c0c1d0-f600-413d-87f1-7e2f70d03ecb\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3283ef76-fd26-4b6f-9bf4-2ee001338001",
+              "name": "Not Found - Inspection not found - the inspection expired, or the supplied identifier is wrong.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inspection"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inspectionId\": \"79c0c1d0-f600-413d-87f1-7e2f70d03ecb\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "050b3a50-3cb0-44e5-a597-4cb3691a1f3a",
+              "name": "Method Not Allowed - `unknown method, please use POST` - the endpoint only accepts POST.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "inspection"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inspectionId\": \"79c0c1d0-f600-413d-87f1-7e2f70d03ecb\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7330a3bf-edd8-4a3c-94b9-970d8a901c2b",
+          "name": "List latest inspections",
+          "request": {
+            "name": "List latest inspections",
+            "description": {
+              "content": "Returns the most recent inspections for a site, site group or VIN so you can discover the `inspectionId` values to use with the Inspection Details request.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "latest-inspections"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "uveye-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "284dc468-9b1f-4e83-b909-2fccea6f9397",
+              "name": "The matching inspections.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "latest-inspections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"siteId\": \"<site id>\",\n  \"amountOfDaysForSearch\": 100\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"inspections\": [\n    {\n      \"inspectionId\": \"string\",\n      \"siteId\": \"string\",\n      \"organizationId\": \"string\",\n      \"inspectedAt\": \"string\",\n      \"vin\": \"string\",\n      \"year\": \"string\",\n      \"model\": \"string\",\n      \"make\": \"string\",\n      \"licensePlate\": \"string\",\n      \"licensePlateUsStateAbbreviation\": \"string\",\n      \"merchandiseVehicleData\": {},\n      \"hasHelios\": true,\n      \"hasArtemis\": false,\n      \"hasAtlas\": true,\n      \"isHeliosModuleInvalid\": false,\n      \"isArtemisModuleInvalid\": false,\n      \"isAtlasModuleInvalid\": true,\n      \"isScanInvalid\": true,\n      \"overviewImage\": \"string\"\n    },\n    {\n      \"inspectionId\": \"string\",\n      \"siteId\": \"string\",\n      \"organizationId\": \"string\",\n      \"inspectedAt\": \"string\",\n      \"vin\": \"string\",\n      \"year\": \"string\",\n      \"model\": \"string\",\n      \"make\": \"string\",\n      \"licensePlate\": \"string\",\n      \"licensePlateUsStateAbbreviation\": \"string\",\n      \"merchandiseVehicleData\": {},\n      \"hasHelios\": false,\n      \"hasArtemis\": true,\n      \"hasAtlas\": false,\n      \"isHeliosModuleInvalid\": true,\n      \"isArtemisModuleInvalid\": true,\n      \"isAtlasModuleInvalid\": false,\n      \"isScanInvalid\": true,\n      \"overviewImage\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8834b5ea-a480-4008-837d-6d49f508534b",
+              "name": "Bad Request - Request failed, or required search criteria are missing from the request body.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "latest-inspections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"siteId\": \"<site id>\",\n  \"amountOfDaysForSearch\": 100\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e89d6662-1c79-44bd-a895-7410af965741",
+              "name": "Unauthorized - `Invalid API key` or `API key is disabled`. Refresh the key in the UVeye Back Office and resend it in the `uveye-api-key` header.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "latest-inspections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"siteId\": \"<site id>\",\n  \"amountOfDaysForSearch\": 100\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "15158c15-a719-4f1e-9306-cfce55b09ca8",
+              "name": "Not Found - Inspection not found - the inspection expired, or the supplied identifier is wrong.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "latest-inspections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"siteId\": \"<site id>\",\n  \"amountOfDaysForSearch\": 100\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ff5d4ea2-bce9-4ab3-8f05-bcf925223dfd",
+              "name": "Method Not Allowed - `unknown method, please use POST` - the endpoint only accepts POST.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "latest-inspections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"siteId\": \"<site id>\",\n  \"amountOfDaysForSearch\": 100\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.uveye.dev/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "uveye-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "cc60cdf7-3837-4544-bf98-d6c5271a43ff",
+    "name": "UVeye Public API v1 Inspections API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Allows third-party access to UVeye's vehicle inspection data. Inspections are produced by UVeye's scanning systems and exposed through four modules: **Artemis** (tires), **Helios** (undercarriage), **Atlas** (exterior) and **Apollo** (interior). The API also carries the **Merchandise** surface, which accepts a dealer's vehicle inventory and pushes rendered multi-angle imagery back over a webhook.\n\nAll data provided is confidential and may not be used in any way without explicit permission from UVeye.\n\nMost endpoints authenticate with a `uveye-api-key` header, generated in the Global Keys tab of the UVeye Back Office. The Merchandise endpoints use a separate credential sent as `Authorization: Bearer <merchandise API key>`, issued at onboarding.\n\nThis document is DERIVED by API Evangelist from UVeye's own published Postman collection (documentation version v1.2, 2026-07-06) at https://api.v1.uveye.dev/. It is not published by UVeye.\n\nContact Support:\n Name: UVeye Customer Support",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "provider": "uveye",
+  "sources": [
+    "uveye-appraisal-api-openapi.yml",
+    "uveye-inspections-api-openapi.yml",
+    "uveye-media-api-openapi.yml",
+    "uveye-merchandise-api-openapi.yml",
+    "uveye-public-links-api-openapi.yml"
+  ],
+  "outputs": [
+    "uveye-appraisal-api-openapi.yml",
+    "uveye-inspections-api-openapi.yml",
+    "uveye-media-api-openapi.yml",
+    "uveye-merchandise-api-openapi.yml",
+    "uveye-public-links-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "uveye-appraisal-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "uveye-inspections-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "uveye-media-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "uveye-merchandise-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "uveye-public-links-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": []
+}

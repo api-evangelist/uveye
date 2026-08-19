@@ -1,0 +1,484 @@
+openapi: 3.2.0
+info:
+  title: UVeye Public API v1 Inspections API
+  version: '1.2'
+  summary: Third-party access to UVeye automated vehicle-inspection data.
+  description: 'Allows third-party access to UVeye''s vehicle inspection data. Inspections are produced by UVeye''s scanning systems and exposed through four modules: **Artemis** (tires), **Helios** (undercarriage), **Atlas** (exterior) and **Apollo** (interior). The API also carries the **Merchandise** surface, which accepts a dealer''s vehicle inventory and pushes rendered multi-angle imagery back over a webhook.
+
+
+    All data provided is confidential and may not be used in any way without explicit permission from UVeye.
+
+
+    Most endpoints authenticate with a `uveye-api-key` header, generated in the Global Keys tab of the UVeye Back Office. The Merchandise endpoints use a separate credential sent as `Authorization: Bearer <merchandise API key>`, issued at onboarding.
+
+
+    This document is DERIVED by API Evangelist from UVeye''s own published Postman collection (documentation version v1.2, 2026-07-06) at https://api.v1.uveye.dev/. It is not published by UVeye.'
+  contact:
+    name: UVeye Customer Support
+    url: https://uveye.com/customer-support/
+  x-origin:
+  - format: postman
+    version: 2.0.0
+    url: https://api.v1.uveye.dev/
+    converter:
+      name: api-evangelist enrichment pipeline
+      version: local-v1
+servers:
+- url: https://api.uveye.dev/v1
+  description: Development environment (base URL published in the API documentation).
+- url: https://api-uveye-playground.web.app/v1/i
+  description: Staging / playground environment (base_url from the published Postman Staging environment).
+security:
+- uveyeApiKey: []
+tags:
+- name: Inspections
+  description: Retrieve vehicle inspection data and the most recent inspections for a site or site group.
+paths:
+  /inspection:
+    post:
+      operationId: getInspectionDetails
+      summary: Get inspection details
+      description: Returns the full inspection record for a vehicle. One of `inspectionId`, `vin`, `licensePlate` or `uniqueId` must be supplied. The response nests the Artemis (tires), Helios (undercarriage), Atlas (exterior) and Apollo (interior) module objects.
+      tags:
+      - Inspections
+      security:
+      - uveyeApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InspectionLookup'
+            examples:
+              byInspectionId:
+                summary: Look up by inspection id
+                value:
+                  inspectionId: 79c0c1d0-f600-413d-87f1-7e2f70d03ecb
+      responses:
+        '200':
+          description: The inspection record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inspection'
+              example:
+                inspectionId: 8b14a050-713c-4cb5-bbea-4eed7e05a376
+                artemis:
+                  leftFront:
+                    treadImage: https://staging.api.uveye.app/v1/image?key=WGP6HmH74NVV2U9DIyGk
+                    wallImage: https://staging.api.uveye.app/v1/image?key=biyzj84gqGtf0cEL48FQ
+                    treadDetections: []
+                    wallDetections: []
+                    brand: ''
+                    dot: ''
+                    tireAge: ''
+                    pressure: ''
+                    size: ''
+                    speedAndLoad: ''
+                    unevenTreadsWearDetected: null
+                    wornTireDetected: ''
+                    isMountingCorrect: null
+                    isAllSeasonPresent: null
+                    isSpeedAndLoadNormal: null
+                    grooves: []
+                  leftRear:
+                    treadImage: https://staging.api.uveye.app/v1/image?key=hDkAkn9Uwm0eOwum4DUO
+                    wallImage: https://staging.api.uveye.app/v1/image?key=oM5zL0ztwFYvd8ikqwBN
+                    treadDetections: []
+                    wallDetections: []
+                    brand: ''
+                    dot: ''
+                    tireAge: ''
+                    pressure: ''
+                    size: ''
+                    speedAndLoad: ''
+                    unevenTreadsWearDetected: null
+                    wornTireDetected: ''
+                    isMountingCorrect: null
+                    isAllSeasonPresent: null
+                    isSpeedAndLoadNormal: null
+                    grooves: []
+                  rightFront:
+                    treadImage: https://staging.api.uveye.app/v1/image?key=boYhKvRao57Cb0lmCSCT
+                    wallImage: https://staging.api.uveye.app/v1/image?key=Jis7NFgxkaFwFbXfDzIv
+                    treadDetections: []
+                    wallDetections: []
+                    brand: ''
+                    dot: ''
+                    tireAge: ''
+                    pressure: ''
+                    size: ''
+                    speedAndLoad: ''
+                    unevenTreadsWearDetected: null
+                    wornTireDetected: ''
+                    isMountingCorrect: null
+                    isAllSeasonPresent: null
+                    isSpeedAndLoadNormal: null
+                    grooves: []
+                  rightRear:
+                    treadImage: https://staging.api.uveye.app/v1/image?key=IXjyBMmDP9JyDVTpyDQN
+                    wallImage: https://staging.api.uveye.app/v1/image?key=d0hsklrrquyCoXF6CnB1
+                    treadDetections: []
+                    wallDetections: []
+                    brand: ''
+                    dot: ''
+                    tireAge: ''
+                    pressure: ''
+                    size: ''
+                    speedAndLoad: ''
+                    unevenTreadsWearDetected: null
+                    wornTireDetected: ''
+                    isMountingCorrect: null
+                    isAllSeasonPresent: null
+                    isSpeedAndLoadNormal: null
+                    grooves: []
+                helios:
+                  undercarriageImage: https://staging.api.uveye.app/v1/image?key=OG7kRrzYXNby8xEmmzFc
+                  detections: []
+                atlas:
+                  detections: []
+                  coverImages:
+                    leftFront: ''
+                    rightFront: ''
+                    leftRear: ''
+                    rightRear: ''
+                  animatedFrames:
+                    left:
+                    - https://staging.api.uveye.app/v1/image?key=d1VMfKboj7RP9zIECrJP
+                    - https://staging.api.uveye.app/v1/image?key=DzCqseYc3eD7dy68PSvT
+                    top:
+                    - https://staging.api.uveye.app/v1/image?key=03lRIemHCADHmmZvMwlM
+                    - https://staging.api.uveye.app/v1/image?key=cR7KydHigOnEoLUW73o5
+                    right:
+                    - https://staging.api.uveye.app/v1/image?key=SrCZGNaqUHMIHM92wlFd
+                    - https://staging.api.uveye.app/v1/image?key=P0EWc6G49YXtlsIm7uZL
+                overviewImage: ''
+                coverImage: ''
+                organizationId: GoGP0TEVU6YVBXkSyb2e_mirror
+                siteId: WwiWSdfhyWiMSOXfKKDx_mirror
+                inspectedAt: '2025-12-01T23:44:09.000Z'
+                licensePlate: DZ58SE
+                licensePlateUsStateAbbreviation: FL
+                vin: 3N1AB8CV9SY330347
+                year: '2025'
+                numberOfCylinders: null
+                fuelType: Gasoline
+                bodyType: Sedan/Saloon
+                make: NISSAN
+                model: Sentra
+                trim: SV
+                cabSubTrim: ''
+                bedSubTrim: ''
+                doorCount: 4
+                exteriorColor: Black
+                engineDisplacement: '2000'
+                uniqueId: ''
+                spareTireInfo: ''
+                keyType: ''
+                isArtemisModuleInvalid: false
+                isAtlasModuleInvalid: false
+                isHeliosModuleInvalid: false
+                isScanInvalid: false
+        '400':
+          description: Bad Request - Request failed, or required search criteria are missing from the request body.
+        '401':
+          description: Unauthorized - `Invalid API key` or `API key is disabled`. Refresh the key in the UVeye Back Office and resend it in the `uveye-api-key` header.
+        '404':
+          description: Not Found - Inspection not found - the inspection expired, or the supplied identifier is wrong.
+        '405':
+          description: Method Not Allowed - `unknown method, please use POST` - the endpoint only accepts POST.
+  /latest-inspections:
+    post:
+      operationId: listLatestInspections
+      summary: List latest inspections
+      description: Returns the most recent inspections for a site, site group or VIN so you can discover the `inspectionId` values to use with the Inspection Details request.
+      tags:
+      - Inspections
+      security:
+      - uveyeApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LatestInspectionsQuery'
+            examples:
+              byDays:
+                summary: Last 100 days for a site
+                value:
+                  siteId: <site id>
+                  amountOfDaysForSearch: 100
+      responses:
+        '200':
+          description: The matching inspections.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  inspections:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InspectionSummary'
+              example: null
+        '400':
+          description: Bad Request - Request failed, or required search criteria are missing from the request body.
+        '401':
+          description: Unauthorized - `Invalid API key` or `API key is disabled`. Refresh the key in the UVeye Back Office and resend it in the `uveye-api-key` header.
+        '404':
+          description: Not Found - Inspection not found - the inspection expired, or the supplied identifier is wrong.
+        '405':
+          description: Method Not Allowed - `unknown method, please use POST` - the endpoint only accepts POST.
+components:
+  schemas:
+    InspectionLookup:
+      type: object
+      description: Exactly one of inspectionId, vin, licensePlate or uniqueId must be supplied.
+      properties:
+        inspectionId:
+          type: string
+          description: A unique id of the inspection provided by the UVeye system; found in the scan page URL.
+        vin:
+          type: string
+          description: The vehicle VIN provided by the manufacturer; found under vehicle info on the inspection page.
+        licensePlate:
+          type: string
+          description: License plate of the vehicle; found under vehicle info on the inspection page.
+        uniqueId:
+          type: string
+          description: The barcode of the vehicle (when given); found on the scan page.
+        alertsOnly:
+          type: boolean
+          default: false
+          description: When true the response returns only alert detections and hides warning detections.
+        showTreadPolygons:
+          type: boolean
+          default: false
+          description: When true, tread polygon coordinates are included.
+      anyOf:
+      - required:
+        - inspectionId
+      - required:
+        - vin
+      - required:
+        - licensePlate
+      - required:
+        - uniqueId
+    LatestInspectionsQuery:
+      type: object
+      description: One location filter (siteId, siteGroupId or vin) plus one result-window filter (amountOfDaysForSearch, amountOfHoursForSearch or amountOfInspections).
+      properties:
+        siteId:
+          type: string
+          description: The id of the site to search inspections for.
+        siteGroupId:
+          type: string
+          description: The id of the site group to search inspections for (also known as BAC for GM dealers).
+        vin:
+          type: string
+          description: Search the latest inspections for a specific vehicle by VIN.
+        amountOfDaysForSearch:
+          type: integer
+          description: Return inspections from the last X days.
+        amountOfHoursForSearch:
+          type: integer
+          description: Return inspections from the last X hours.
+        amountOfInspections:
+          type: integer
+          description: Return the most recent X inspections.
+      anyOf:
+      - required:
+        - siteId
+      - required:
+        - siteGroupId
+      - required:
+        - vin
+    InspectionSummary:
+      type: object
+      properties:
+        inspectionId:
+          type: string
+          description: Unique id of the inspection - use it with the Inspection Details request.
+        siteId:
+          type: string
+          description: Id of the site where the inspection took place.
+        organizationId:
+          type: string
+          description: Id of the organization the site belongs to.
+        inspectedAt:
+          type: string
+          description: Date and time the inspection was scanned.
+        vin:
+          type: string
+          description: Vehicle VIN.
+        year:
+          type: string
+          description: Vehicle model year; may be empty when unavailable.
+        model:
+          type: string
+          description: Vehicle model.
+        make:
+          type: string
+          description: Vehicle make.
+        licensePlate:
+          type: string
+          description: Vehicle license plate.
+        licensePlateUsStateAbbreviation:
+          type: string
+          description: US state abbreviation of the license plate.
+        merchandiseVehicleData:
+          type: object
+          description: Resolved vehicle data (inventory-first); present only once resolved.
+        hasHelios:
+          type: boolean
+          description: True if the inspection includes an undercarriage (Helios) scan.
+        hasArtemis:
+          type: boolean
+          description: True if the inspection includes a tire (Artemis) scan.
+        hasAtlas:
+          type: boolean
+          description: True if the inspection includes an exterior (Atlas) scan.
+        isHeliosModuleInvalid:
+          type: boolean
+          description: True if the undercarriage module is invalid.
+        isArtemisModuleInvalid:
+          type: boolean
+          description: True if the tire module is invalid.
+        isAtlasModuleInvalid:
+          type: boolean
+          description: True if the exterior module is invalid.
+        isScanInvalid:
+          type: boolean
+          description: True if any of the inspection modules is invalid.
+        overviewImage:
+          type: string
+          description: URL of the inspection overview image.
+    Inspection:
+      type: object
+      description: A single vehicle inspection with its per-module results.
+      properties:
+        inspectionId:
+          type: string
+          description: A unique id of the inspection.
+        artemis:
+          type: object
+          description: Tire condition per wheel position (leftFront, leftRear, rightFront, rightRear).
+        helios:
+          type: object
+          description: Undercarriage condition, including detections.
+        atlas:
+          type: object
+          description: Exterior condition, including detections, coverImages and animatedFrames.
+        apollo:
+          type: object
+          description: 'Interior condition (apolloInformation: interiorColor, interiorType, hasHeadrests, hasThirdRowSeating, isBioHazard).'
+        overviewImage:
+          type: string
+          description: URL to the overview image of the vehicle.
+        coverImage:
+          type: string
+          description: URL to the cover image of the vehicle.
+        organizationId:
+          type: string
+          description: A unique id of the organization that generated the inspection.
+        organizationDisplayName:
+          type: string
+          description: Name of the organization that generated the inspection.
+        siteId:
+          type: string
+          description: A unique id of the site that generated the inspection.
+        siteDisplayName:
+          type: string
+          description: Name of the site that generated the inspection.
+        inspectedAt:
+          type: string
+          description: Date and time the inspection occurred.
+        licensePlate:
+          type: string
+          description: License plate of the scanned vehicle.
+        licensePlateUsStateAbbreviation:
+          type: string
+          description: Two-letter US state code shown on the license plate.
+        vin:
+          type: string
+          description: Vehicle VIN provided by the manufacturer.
+        uniqueId:
+          type: string
+          description: Barcode identifier of the vehicle, when given.
+        isArtemisModuleInvalid:
+          type: boolean
+          description: True if any tire inspection images failed to upload.
+        isAtlasModuleInvalid:
+          type: boolean
+          description: True if the exterior inspection images failed to upload.
+        isHeliosModuleInvalid:
+          type: boolean
+          description: True if the undercarriage inspection image failed to upload.
+        isScanInvalid:
+          type: boolean
+          description: True if any of the inspection modules is invalid.
+        year:
+          type: string
+          description: Vehicle model year.
+        numberOfCylinders:
+          type:
+          - number
+          - 'null'
+          description: Number of engine cylinders; null when unavailable.
+        fuelType:
+          type: string
+          description: Fuel type of the vehicle.
+        bodyType:
+          type: string
+          description: Body type of the vehicle.
+        make:
+          type: string
+          description: Vehicle make.
+        model:
+          type: string
+          description: Vehicle model.
+        trim:
+          type: string
+          description: Vehicle trim level, when available.
+        cabSubTrim:
+          type: string
+          description: Cab sub-trim, for applicable body types.
+        bedSubTrim:
+          type: string
+          description: Bed sub-trim, for applicable body types.
+        doorCount:
+          type:
+          - number
+          - 'null'
+          description: Number of doors; null when unavailable.
+        exteriorColor:
+          type: string
+          description: Exterior color of the vehicle.
+        engineDisplacement:
+          type: string
+          description: Engine displacement of the vehicle.
+        isDriveable:
+          type: boolean
+          description: True if the vehicle was determined to be driveable.
+        spareTireInfo:
+          type: string
+          description: Spare tire information, when available.
+        keyType:
+          type: string
+          description: The vehicle's key type, when available.
+        merchandiseVehicleData:
+          type: object
+          description: Resolved vehicle data (inventory-first); present only once resolved.
+  securitySchemes:
+    uveyeApiKey:
+      type: apiKey
+      in: header
+      name: uveye-api-key
+      description: Global API key generated in the Global Keys tab of the UVeye Back Office.
+    merchandiseBearer:
+      type: http
+      scheme: bearer
+      description: 'Merchandise API key issued at onboarding, sent as `Authorization: Bearer <merchandise API key>`. Distinct from `uveye-api-key`.'
+externalDocs:
+  description: UVeye Public API v1 documentation (Postman)
+  url: https://api.v1.uveye.dev/

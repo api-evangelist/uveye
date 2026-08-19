@@ -1,0 +1,352 @@
+{
+  "item": [
+    {
+      "id": "982d33e6-5b8a-4274-b923-3d009d0a26b8",
+      "name": "Appraisal",
+      "description": {
+        "content": "Appraisal / quote data derived from an inspection.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0d6d49cd-773e-47b4-8f88-66f94cf727fd",
+          "name": "Get appraisal quote data for an inspection",
+          "request": {
+            "name": "Get appraisal quote data for an inspection",
+            "description": {
+              "content": "Returns the appraisal data of an inspection: basic vehicle information, the public quote link, the offer price and total reconditioning cost (when available), and damages grouped by car part. Each `defects[]` entry is one car part; its `damages[]` array holds the estimated repairs for that part, and each repair carries its own `damages[]` array of supporting images. The inspected vehicle must have a related appraisal ready on uvcamp.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "quote"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "uveye-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f6fc5438-1cda-4b8d-b8c9-471697bde24d",
+              "name": "The appraisal quote.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "quote"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inspectionId\": \"30a54b98-6fd6-4a96-9b6b-da8885d7c826\",\n  \"includeImages\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"inspectionId\": \"2b16873e-31de-4e84-9a5c-6e5eb0020536\",\n  \"licensePlate\": \"Z865YY\",\n  \"vin\": \"JTMWFREV4HD096740\",\n  \"make\": \"TOYOTA\",\n  \"model\": \"RAV4\",\n  \"year\": 2017,\n  \"coverImage\": \"https://us.api.uveye.app/v1/image?key=HcUhRhZt2aC4gpsTFRao\",\n  \"quoteUrl\": \"https://us.public.uveye.app/evaluation/report/nWz0GSNPYFCSl61g914D\",\n  \"defects\": [\n    {\n      \"partName\": \"BumperRear\",\n      \"module\": \"Atlas\",\n      \"isAutoEstimated\": true,\n      \"cost\": 97.5,\n      \"defectDescription\": \"A small scratch on the rear bumper that does not penetrate the paint and is primarily cosmetic.\",\n      \"damages\": [\n        {\n          \"imageUrl\": \"https://us.api.uveye.app/v1/image?key=qA7Mp5hIepJstTu4tZ0M\",\n          \"detectionId\": \"2b16873e-31de-4e84-9a5c-6e5eb0020536_scratches_damage_detector_inspection_50\",\n          \"rectangle\": {\n            \"pointType\": \"Relative\",\n            \"width\": 0.037700000000000004,\n            \"height\": 0.0286,\n            \"top\": 0.6617000000000001,\n            \"left\": 0.31365\n          },\n          \"damageType\": \"BodyScratch\"\n        }\n      ]\n    },\n    {\n      \"partName\": \"DoorRearRight\",\n      \"module\": \"Atlas\",\n      \"isAutoEstimated\": true,\n      \"cost\": 90,\n      \"defectDescription\": \"A small dent found on the rear right door, which may not affect the door's functionality but is visually noticeable.\",\n      \"damages\": [\n        {\n          \"imageUrl\": \"https://us.api.uveye.app/v1/image?key=rdS5zTMih1qo1XMMozH5\",\n          \"detectionId\": \"2b16873e-31de-4e84-9a5c-6e5eb0020536_scratches_damage_detector_inspection_9\",\n          \"rectangle\": {\n            \"pointType\": \"Relative\",\n            \"width\": 0.0819,\n            \"height\": 0.0819,\n            \"top\": 0.59055,\n            \"left\": 0.6315500000000001\n          },\n          \"damageType\": \"BodyGlassesDent\"\n        }\n      ]\n    },\n    {\n      \"partName\": \"FenderRearLeft\",\n      \"module\": \"Atlas\",\n      \"isAutoEstimated\": true,\n      \"cost\": 105,\n      \"defectDescription\": \"The rear left fender has small dents that are not deep and do not affect the structural integrity of the vehicle. These dents can be repaired with minor bodywork.\",\n      \"damages\": [\n        {\n          \"imageUrl\": \"https://us.api.uveye.app/v1/image?key=0KQw5xfzq8oZFA4XNN4b\",\n          \"detectionId\": \"2b16873e-31de-4e84-9a5c-6e5eb0020536_scratches_damage_detector_inspection_5\",\n          \"rectangle\": {\n            \"pointType\": \"Relative\",\n            \"width\": 0.037700000000000004,\n            \"height\": 0.0273,\n            \"top\": 0.57285,\n            \"left\": 0.33964999999999995\n          },\n          \"damageType\": \"BodyGlassesDent\"\n        },\n        {\n          \"imageUrl\": \"https://us.api.uveye.app/v1/image?key=cMmZnll44vN2IceKb31O\",\n          \"detectionId\": \"2b16873e-31de-4e84-9a5c-6e5eb0020536_scratches_damage_detector_inspection_4\",\n          \"rectangle\": {\n            \"pointType\": \"Relative\",\n            \"width\": 0.0325,\n            \"height\": 0.0234,\n            \"top\": 0.5852999999999999,\n            \"left\": 0.35825\n          },\n          \"damageType\": \"BodyShallowDent\"\n        }\n      ]\n    },\n    {\n      \"partName\": \"LeftFrontTire\",\n      \"module\": \"Artemis\",\n      \"isAutoEstimated\": true,\n      \"cost\": 275,\n      \"defectDescription\": \"Wheel damage detected. Replacement or repair required.\",\n      \"damages\": [\n        {\n          \"imageUrl\": \"https://us.api.uveye.app/v1/image?key=A6E8uXtUnhZ4WBPT65a3\",\n          \"detectionId\": \"g75qd975f7n0|RimDamageCosmetic\",\n          \"rectangle\": {\n            \"pointType\": \"Relative\",\n            \"top\": 0.676,\n            \"left\": 0.547,\n            \"width\": 0.071,\n            \"height\": 0.022\n          },\n          \"damageType\": \"TireCosmeticRimDamage\"\n        }\n      ]\n    },\n    {\n      \"partName\": \"Trunk\",\n      \"module\": \"Atlas\",\n      \"isAutoEstimated\": true,\n      \"cost\": 222.5,\n      \"defectDescription\": \"The trunk has moderate sun damage, which may lead to paint deterioration and potential rusting if not addressed.\",\n      \"damages\": [\n        {\n          \"imageUrl\": \"https://us.api.uveye.app/v1/image?key=Bcw71US7f1kV5XrGJu8g\",\n          \"detectionId\": \"2b16873e-31de-4e84-9a5c-6e5eb0020536_scratches_damage_detector_inspection_10\",\n          \"rectangle\": {\n            \"pointType\": \"Relative\",\n            \"width\": 0.1898,\n            \"height\": 0.16640000000000002,\n            \"top\": 0.2788,\n            \"left\": 0.8311\n          },\n          \"damageType\": \"BodySunDamage\"\n        }\n      ]\n    }\n  ],\n  \"totalReconditioningCost\": 790,\n  \"offerPrice\": 11400\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5d0c06c6-507a-45d4-9d7e-d981b8777771",
+              "name": "Bad Request - `Request failed`, or `Missing search criteria`: one of inspectionId, licensePlate, vin or uniqueId must be provided.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "quote"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inspectionId\": \"30a54b98-6fd6-4a96-9b6b-da8885d7c826\",\n  \"includeImages\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9fbcd78d-44de-4ab0-8d48-a1397784567b",
+              "name": "Unauthorized - `Invalid API key` or `API key is disabled`. Refresh the key in the UVeye Back Office and resend it in the `uveye-api-key` header.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "quote"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inspectionId\": \"30a54b98-6fd6-4a96-9b6b-da8885d7c826\",\n  \"includeImages\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e82e1409-c945-40a1-9230-9210e4d28586",
+              "name": "Not Found - no inspection or active quote found for the given identifier.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "quote"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inspectionId\": \"30a54b98-6fd6-4a96-9b6b-da8885d7c826\",\n  \"includeImages\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "36e12641-235a-42d4-933d-fc3f739861c7",
+              "name": "Method Not Allowed - `unknown method, please use POST` - the endpoint only accepts POST.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "quote"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inspectionId\": \"30a54b98-6fd6-4a96-9b6b-da8885d7c826\",\n  \"includeImages\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.uveye.dev/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "uveye-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "bed66db3-a961-4cce-a295-c60b98d39a18",
+    "name": "UVeye Public API v1 Appraisal API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Allows third-party access to UVeye's vehicle inspection data. Inspections are produced by UVeye's scanning systems and exposed through four modules: **Artemis** (tires), **Helios** (undercarriage), **Atlas** (exterior) and **Apollo** (interior). The API also carries the **Merchandise** surface, which accepts a dealer's vehicle inventory and pushes rendered multi-angle imagery back over a webhook.\n\nAll data provided is confidential and may not be used in any way without explicit permission from UVeye.\n\nMost endpoints authenticate with a `uveye-api-key` header, generated in the Global Keys tab of the UVeye Back Office. The Merchandise endpoints use a separate credential sent as `Authorization: Bearer <merchandise API key>`, issued at onboarding.\n\nThis document is DERIVED by API Evangelist from UVeye's own published Postman collection (documentation version v1.2, 2026-07-06) at https://api.v1.uveye.dev/. It is not published by UVeye.\n\nContact Support:\n Name: UVeye Customer Support",
+      "type": "text/plain"
+    }
+  }
+}

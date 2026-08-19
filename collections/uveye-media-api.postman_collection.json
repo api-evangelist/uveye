@@ -1,0 +1,243 @@
+{
+  "item": [
+    {
+      "id": "89c9aa69-8894-4fff-af59-fdb5fbbe0ae7",
+      "name": "Media",
+      "description": {
+        "content": "Inspection imagery.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c5ebed0a-99d0-4e25-8842-f0bb08dd1d8b",
+          "name": "Get an inspection image",
+          "request": {
+            "name": "Get an inspection image",
+            "description": {
+              "content": "Returns an image acquired during a UVeye inspection, identified by a `key` query parameter. You normally do not build this request yourself - image URLs returned inside other endpoints' responses (overviewImage, coverImage, tire treadImage/wallImage, detection image/croppedImage, Atlas coverImages/animatedFrames) already include the `?key=` parameter; use the returned URL as-is. Image URLs are valid for 1 hour unless stated otherwise.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "image"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "key",
+                  "value": "<string>",
+                  "description": "(Required) The image key, taken from an image URL returned by another endpoint."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "image/jpeg"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "uveye-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ea2be6b6-a3ce-419e-ac3e-c07203502ea7",
+              "name": "The raw image.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "image"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "image/jpeg"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "image/jpeg"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ed88a7dd-2ee7-4fc0-8dc9-54df944595fe",
+              "name": "Unauthorized - `Invalid API key` or `API key is disabled`. Refresh the key in the UVeye Back Office and resend it in the `uveye-api-key` header.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "image"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e3a15521-ddb5-4e7b-918c-172d3b0e0d07",
+              "name": "Not Found - the image key is unknown or the URL has expired (image URLs expire after 1 hour).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "image"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "key",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "uveye-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.uveye.dev/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "uveye-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "7730e382-7371-4238-981c-6e24159ac0f3",
+    "name": "UVeye Public API v1 Media API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Allows third-party access to UVeye's vehicle inspection data. Inspections are produced by UVeye's scanning systems and exposed through four modules: **Artemis** (tires), **Helios** (undercarriage), **Atlas** (exterior) and **Apollo** (interior). The API also carries the **Merchandise** surface, which accepts a dealer's vehicle inventory and pushes rendered multi-angle imagery back over a webhook.\n\nAll data provided is confidential and may not be used in any way without explicit permission from UVeye.\n\nMost endpoints authenticate with a `uveye-api-key` header, generated in the Global Keys tab of the UVeye Back Office. The Merchandise endpoints use a separate credential sent as `Authorization: Bearer <merchandise API key>`, issued at onboarding.\n\nThis document is DERIVED by API Evangelist from UVeye's own published Postman collection (documentation version v1.2, 2026-07-06) at https://api.v1.uveye.dev/. It is not published by UVeye.\n\nContact Support:\n Name: UVeye Customer Support",
+      "type": "text/plain"
+    }
+  }
+}

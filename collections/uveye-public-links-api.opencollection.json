@@ -1,0 +1,68 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "UVeye Public API v1 Public Links API",
+    "version": "1.2"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "uveye-api-key",
+      "value": "{{uveye-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Public Links",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create an inspection public link",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.uveye.dev/v1/public-link",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "uveye-api-key",
+              "value": "{{uveye-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a shareable public link to an inspection. Public inspection links expire 30 days after they are generated; the exact expiry is returned in `expirationDate`."
+        },
+        {
+          "info": {
+            "name": "Record that an inspection was shared",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.uveye.dev/v1/inspection-shared",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "uveye-api-key",
+              "value": "{{uveye-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Records that an inspection's public link was shared with a customer. Call this after sending a public link so the share is logged in the UVeye system. Returns 200 with an empty body on success."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

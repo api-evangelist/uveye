@@ -1,0 +1,64 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "UVeye Public API v1 Merchandise API",
+    "version": "1.2"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "uveye-api-key",
+      "value": "{{uveye-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Merchandise",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Submit inventory",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.uveye.dev/v1/merchandise/inventory/vehicles",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Push VINs plus basic vehicle data; UVeye scans, renders multi-angle images and pushes them back to your webhook. Batch limit is 100 vehicles per request (more returns 413). Resubmit your full active inventory periodically (for example every 4 hours) - unchanged vehicles are no-ops, deduplicated by content hash. Processed asynchronously: there is no per-VIN validation in the response, and a malformed or incomplete VIN is excluded and simply never produces a webhook."
+        },
+        {
+          "info": {
+            "name": "Mark vehicles sold",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.uveye.dev/v1/merchandise/inventory/sold",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Mark vehicles sold so UVeye stops merchandising them. Call this explicitly when a VIN sells - v1 does not auto-detect sold vehicles from their absence in a resubmitted inventory. To bring a sold VIN back, resubmit it via Submit inventory. Same 100-vehicle batch limit."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

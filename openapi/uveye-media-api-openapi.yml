@@ -1,0 +1,82 @@
+openapi: 3.2.0
+info:
+  title: UVeye Public API v1 Media API
+  version: '1.2'
+  summary: Third-party access to UVeye automated vehicle-inspection data.
+  description: 'Allows third-party access to UVeye''s vehicle inspection data. Inspections are produced by UVeye''s scanning systems and exposed through four modules: **Artemis** (tires), **Helios** (undercarriage), **Atlas** (exterior) and **Apollo** (interior). The API also carries the **Merchandise** surface, which accepts a dealer''s vehicle inventory and pushes rendered multi-angle imagery back over a webhook.
+
+
+    All data provided is confidential and may not be used in any way without explicit permission from UVeye.
+
+
+    Most endpoints authenticate with a `uveye-api-key` header, generated in the Global Keys tab of the UVeye Back Office. The Merchandise endpoints use a separate credential sent as `Authorization: Bearer <merchandise API key>`, issued at onboarding.
+
+
+    This document is DERIVED by API Evangelist from UVeye''s own published Postman collection (documentation version v1.2, 2026-07-06) at https://api.v1.uveye.dev/. It is not published by UVeye.'
+  contact:
+    name: UVeye Customer Support
+    url: https://uveye.com/customer-support/
+  x-origin:
+  - format: postman
+    version: 2.0.0
+    url: https://api.v1.uveye.dev/
+    converter:
+      name: api-evangelist enrichment pipeline
+      version: local-v1
+servers:
+- url: https://api.uveye.dev/v1
+  description: Development environment (base URL published in the API documentation).
+- url: https://api-uveye-playground.web.app/v1/i
+  description: Staging / playground environment (base_url from the published Postman Staging environment).
+security:
+- uveyeApiKey: []
+tags:
+- name: Media
+  description: Inspection imagery.
+paths:
+  /image:
+    get:
+      operationId: getInspectionImage
+      summary: Get an inspection image
+      description: Returns an image acquired during a UVeye inspection, identified by a `key` query parameter. You normally do not build this request yourself - image URLs returned inside other endpoints' responses (overviewImage, coverImage, tire treadImage/wallImage, detection image/croppedImage, Atlas coverImages/animatedFrames) already include the `?key=` parameter; use the returned URL as-is. Image URLs are valid for 1 hour unless stated otherwise.
+      tags:
+      - Media
+      security:
+      - uveyeApiKey: []
+      parameters:
+      - name: key
+        in: query
+        required: true
+        schema:
+          type: string
+        description: The image key, taken from an image URL returned by another endpoint.
+      responses:
+        '200':
+          description: The raw image.
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            image/png:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: Unauthorized - `Invalid API key` or `API key is disabled`. Refresh the key in the UVeye Back Office and resend it in the `uveye-api-key` header.
+        '404':
+          description: Not Found - the image key is unknown or the URL has expired (image URLs expire after 1 hour).
+components:
+  securitySchemes:
+    uveyeApiKey:
+      type: apiKey
+      in: header
+      name: uveye-api-key
+      description: Global API key generated in the Global Keys tab of the UVeye Back Office.
+    merchandiseBearer:
+      type: http
+      scheme: bearer
+      description: 'Merchandise API key issued at onboarding, sent as `Authorization: Bearer <merchandise API key>`. Distinct from `uveye-api-key`.'
+externalDocs:
+  description: UVeye Public API v1 documentation (Postman)
+  url: https://api.v1.uveye.dev/

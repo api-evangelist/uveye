@@ -1,0 +1,288 @@
+openapi: 3.2.0
+info:
+  title: UVeye Public API v1 Merchandise API
+  version: '1.2'
+  summary: Third-party access to UVeye automated vehicle-inspection data.
+  description: 'Allows third-party access to UVeye''s vehicle inspection data. Inspections are produced by UVeye''s scanning systems and exposed through four modules: **Artemis** (tires), **Helios** (undercarriage), **Atlas** (exterior) and **Apollo** (interior). The API also carries the **Merchandise** surface, which accepts a dealer''s vehicle inventory and pushes rendered multi-angle imagery back over a webhook.
+
+
+    All data provided is confidential and may not be used in any way without explicit permission from UVeye.
+
+
+    Most endpoints authenticate with a `uveye-api-key` header, generated in the Global Keys tab of the UVeye Back Office. The Merchandise endpoints use a separate credential sent as `Authorization: Bearer <merchandise API key>`, issued at onboarding.
+
+
+    This document is DERIVED by API Evangelist from UVeye''s own published Postman collection (documentation version v1.2, 2026-07-06) at https://api.v1.uveye.dev/. It is not published by UVeye.'
+  contact:
+    name: UVeye Customer Support
+    url: https://uveye.com/customer-support/
+  x-origin:
+  - format: postman
+    version: 2.0.0
+    url: https://api.v1.uveye.dev/
+    converter:
+      name: api-evangelist enrichment pipeline
+      version: local-v1
+servers:
+- url: https://api.uveye.dev/v1
+  description: Development environment (base URL published in the API documentation).
+- url: https://api-uveye-playground.web.app/v1/i
+  description: Staging / playground environment (base_url from the published Postman Staging environment).
+security:
+- uveyeApiKey: []
+tags:
+- name: Merchandise
+  description: Submit dealer inventory for merchandising and mark vehicles sold.
+paths:
+  /merchandise/inventory/vehicles:
+    post:
+      operationId: submitMerchandiseInventory
+      summary: Submit inventory
+      description: 'Push VINs plus basic vehicle data; UVeye scans, renders multi-angle images and pushes them back to your webhook. Batch limit is 100 vehicles per request (more returns 413). Resubmit your full active inventory periodically (for example every 4 hours) - unchanged vehicles are no-ops, deduplicated by content hash. Processed asynchronously: there is no per-VIN validation in the response, and a malformed or incomplete VIN is excluded and simply never produces a webhook.'
+      tags:
+      - Merchandise
+      security:
+      - merchandiseBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - vehicles
+              properties:
+                vehicles:
+                  type: array
+                  maxItems: 100
+                  items:
+                    $ref: '#/components/schemas/MerchandiseVehicle'
+            example:
+              vehicles:
+              - vin: 1G1ZD5ST7JF123456
+                make: Chevrolet
+                model: Malibu
+                year: 2024
+                color: Silver
+                body: Sedan
+                stockNumber: ST-12345
+                mileage: 12500
+                type: USED
+                sellingPrice: 21500
+      responses:
+        '202':
+          description: Accepted for asynchronous processing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchandiseAccepted'
+              example:
+                received: true
+                requestId: f1a3b2c5-8e9d-4a6f-9c8e-1d2b3a4e5f6c
+                count: 78
+        '400':
+          description: Bad Request - malformed body or a missing required field.
+        '401':
+          description: Unauthorized - the merchandise key is missing, invalid, disabled, or not authorized for merchandise.
+        '413':
+          description: Payload Too Large - more than 100 vehicles in a single request.
+  /merchandise/inventory/sold:
+    post:
+      operationId: markMerchandiseVehiclesSold
+      summary: Mark vehicles sold
+      description: Mark vehicles sold so UVeye stops merchandising them. Call this explicitly when a VIN sells - v1 does not auto-detect sold vehicles from their absence in a resubmitted inventory. To bring a sold VIN back, resubmit it via Submit inventory. Same 100-vehicle batch limit.
+      tags:
+      - Merchandise
+      security:
+      - merchandiseBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - vins
+              properties:
+                vins:
+                  type: array
+                  maxItems: 100
+                  items:
+                    type: string
+            example:
+              vins:
+              - 1G1ZD5ST7JF123456
+              - 1HGCM82633A004352
+      responses:
+        '202':
+          description: Accepted for asynchronous processing.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchandiseAccepted'
+              example:
+                received: true
+                requestId: a7c9e1d3-4b6f-4c2a-8e1d-9f3b2a4c6d8e
+                count: 2
+        '400':
+          description: Bad Request - missing/empty `vins` or a non-string entry.
+        '401':
+          description: Unauthorized - the merchandise key is missing, invalid, disabled, or not authorized for merchandise.
+        '413':
+          description: Payload Too Large - more than 100 vehicles in a single request.
+webhooks:
+  merchandiseImagesReady:
+    post:
+      operationId: merchandiseImagesReadyWebhook
+      summary: Merchandise images ready (delivered by UVeye to your endpoint)
+      description: 'When a VIN''s merchandise images are ready, UVeye POSTs to your configured webhook URL.
+
+
+        `Authorization: Bearer <customer-bearer-token>` carries the token UVeye was given at onboarding - match it to authenticate UVeye. `X-UVeye-Signature` is an HS256 JWT binding the body (`body_sha256`); verify it for tamper detection, and it carries a `delivery_id` idempotency key (optional).
+
+
+        Acknowledge with 2xx. A non-2xx triggers retry - up to 5 retries / 6 attempts, same `delivery_id`.
+
+
+        The minimum body is shown below (default). A detailed format (opt-in at onboarding) adds `publishStatus`, `coverImage`, `imageCount`, per-image `{ url, category }`, and `modules`.'
+      tags:
+      - Merchandise
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        description: '`Bearer <customer-bearer-token>` - the token UVeye was given at onboarding.'
+      - name: X-UVeye-Signature
+        in: header
+        required: true
+        schema:
+          type: string
+        description: HS256 JWT binding the body (`body_sha256`) and carrying a `delivery_id` idempotency key.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                vin:
+                  type: string
+                publishedAt:
+                  type: string
+                  format: date-time
+                images:
+                  type: array
+                  items:
+                    type: string
+                    format: uri
+            example:
+              vin: 1G1ZD5ST7JF123456
+              publishedAt: '2026-05-12T10:34:00Z'
+              images:
+              - https://<image-cdn-host>/.../front-left.jpg
+              - https://<image-cdn-host>/.../front-right.jpg
+              - https://<image-cdn-host>/.../rear-left.jpg
+              - https://<image-cdn-host>/.../rear-right.jpg
+      responses:
+        2xx:
+          description: Acknowledged. A non-2xx response triggers retry (up to 5 retries / 6 attempts, same delivery_id).
+components:
+  schemas:
+    MerchandiseAccepted:
+      type: object
+      properties:
+        received:
+          type: boolean
+        requestId:
+          type: string
+          description: Keep this for support - the batch is processed asynchronously.
+        count:
+          type: integer
+    MerchandiseVehicle:
+      type: object
+      required:
+      - vin
+      - make
+      - model
+      - year
+      properties:
+        vin:
+          type: string
+          description: Vehicle VIN.
+        make:
+          type: string
+          description: Vehicle make.
+        model:
+          type: string
+          description: Vehicle model.
+        year:
+          type: integer
+          minimum: 1900
+          maximum: 2100
+          description: Vehicle model year.
+        color:
+          type: string
+          description: Recommended - improves rendered output.
+        body:
+          type: string
+          description: Recommended - improves rendered output.
+        stockNumber:
+          type: string
+          description: UI metadata only; no impact on images.
+        trim:
+          type: string
+          description: UI metadata only.
+        mileage:
+          type: integer
+          description: UI metadata only.
+        type:
+          type: string
+          enum:
+          - NEW
+          - USED
+          description: UI metadata only.
+        sellingPrice:
+          type: number
+          description: UI metadata only.
+        interiorColor:
+          type: string
+          description: UI metadata only.
+        transmission:
+          type: string
+          description: UI metadata only.
+        drivetrain:
+          type: string
+          description: UI metadata only.
+        engine:
+          type: string
+          description: UI metadata only.
+        fuelType:
+          type: string
+          description: UI metadata only.
+        msrp:
+          type: number
+          description: UI metadata only.
+        certified:
+          type: boolean
+          description: UI metadata only.
+        photoCount:
+          type: integer
+          description: UI metadata only.
+        stockInDate:
+          type: string
+          description: UI metadata only. YYYY-MM-DD.
+  securitySchemes:
+    uveyeApiKey:
+      type: apiKey
+      in: header
+      name: uveye-api-key
+      description: Global API key generated in the Global Keys tab of the UVeye Back Office.
+    merchandiseBearer:
+      type: http
+      scheme: bearer
+      description: 'Merchandise API key issued at onboarding, sent as `Authorization: Bearer <merchandise API key>`. Distinct from `uveye-api-key`.'
+externalDocs:
+  description: UVeye Public API v1 documentation (Postman)
+  url: https://api.v1.uveye.dev/

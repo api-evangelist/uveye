@@ -1,0 +1,68 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "UVeye Public API v1 Inspections API",
+    "version": "1.2"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "uveye-api-key",
+      "value": "{{uveye-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Inspections",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get inspection details",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.uveye.dev/v1/inspection",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "uveye-api-key",
+              "value": "{{uveye-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the full inspection record for a vehicle. One of `inspectionId`, `vin`, `licensePlate` or `uniqueId` must be supplied. The response nests the Artemis (tires), Helios (undercarriage), Atlas (exterior) and Apollo (interior) module objects."
+        },
+        {
+          "info": {
+            "name": "List latest inspections",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.uveye.dev/v1/latest-inspections",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "uveye-api-key",
+              "value": "{{uveye-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the most recent inspections for a site, site group or VIN so you can discover the `inspectionId` values to use with the Inspection Details request."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

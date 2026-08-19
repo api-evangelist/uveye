@@ -1,0 +1,47 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "UVeye Public API v1 Appraisal API",
+    "version": "1.2"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "uveye-api-key",
+      "value": "{{uveye-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Appraisal",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get appraisal quote data for an inspection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.uveye.dev/v1/quote",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "uveye-api-key",
+              "value": "{{uveye-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the appraisal data of an inspection: basic vehicle information, the public quote link, the offer price and total reconditioning cost (when available), and damages grouped by car part. Each `defects[]` entry is one car part; its `damages[]` array holds the estimated repairs for that part, and each repair carries its own `damages[]` array of supporting images. The inspected vehicle must have a related appraisal ready on uvcamp."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

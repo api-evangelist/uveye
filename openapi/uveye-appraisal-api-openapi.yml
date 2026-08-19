@@ -1,0 +1,211 @@
+openapi: 3.2.0
+info:
+  title: UVeye Public API v1 Appraisal API
+  version: '1.2'
+  summary: Third-party access to UVeye automated vehicle-inspection data.
+  description: 'Allows third-party access to UVeye''s vehicle inspection data. Inspections are produced by UVeye''s scanning systems and exposed through four modules: **Artemis** (tires), **Helios** (undercarriage), **Atlas** (exterior) and **Apollo** (interior). The API also carries the **Merchandise** surface, which accepts a dealer''s vehicle inventory and pushes rendered multi-angle imagery back over a webhook.
+
+
+    All data provided is confidential and may not be used in any way without explicit permission from UVeye.
+
+
+    Most endpoints authenticate with a `uveye-api-key` header, generated in the Global Keys tab of the UVeye Back Office. The Merchandise endpoints use a separate credential sent as `Authorization: Bearer <merchandise API key>`, issued at onboarding.
+
+
+    This document is DERIVED by API Evangelist from UVeye''s own published Postman collection (documentation version v1.2, 2026-07-06) at https://api.v1.uveye.dev/. It is not published by UVeye.'
+  contact:
+    name: UVeye Customer Support
+    url: https://uveye.com/customer-support/
+  x-origin:
+  - format: postman
+    version: 2.0.0
+    url: https://api.v1.uveye.dev/
+    converter:
+      name: api-evangelist enrichment pipeline
+      version: local-v1
+servers:
+- url: https://api.uveye.dev/v1
+  description: Development environment (base URL published in the API documentation).
+- url: https://api-uveye-playground.web.app/v1/i
+  description: Staging / playground environment (base_url from the published Postman Staging environment).
+security:
+- uveyeApiKey: []
+tags:
+- name: Appraisal
+  description: Appraisal / quote data derived from an inspection.
+paths:
+  /quote:
+    post:
+      operationId: getQuoteByInspection
+      summary: Get appraisal quote data for an inspection
+      description: 'Returns the appraisal data of an inspection: basic vehicle information, the public quote link, the offer price and total reconditioning cost (when available), and damages grouped by car part. Each `defects[]` entry is one car part; its `damages[]` array holds the estimated repairs for that part, and each repair carries its own `damages[]` array of supporting images. The inspected vehicle must have a related appraisal ready on uvcamp.'
+      tags:
+      - Appraisal
+      security:
+      - uveyeApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuoteRequest'
+            examples:
+              byInspectionId:
+                value:
+                  inspectionId: 30a54b98-6fd6-4a96-9b6b-da8885d7c826
+                  includeImages: true
+      responses:
+        '200':
+          description: The appraisal quote.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Appraisal quote payload - see the example for the published shape.
+              example:
+                inspectionId: 2b16873e-31de-4e84-9a5c-6e5eb0020536
+                licensePlate: Z865YY
+                vin: JTMWFREV4HD096740
+                make: TOYOTA
+                model: RAV4
+                year: 2017
+                coverImage: https://us.api.uveye.app/v1/image?key=HcUhRhZt2aC4gpsTFRao
+                quoteUrl: https://us.public.uveye.app/evaluation/report/nWz0GSNPYFCSl61g914D
+                defects:
+                - partName: BumperRear
+                  module: Atlas
+                  isAutoEstimated: true
+                  cost: 97.5
+                  defectDescription: A small scratch on the rear bumper that does not penetrate the paint and is primarily cosmetic.
+                  damages:
+                  - imageUrl: https://us.api.uveye.app/v1/image?key=qA7Mp5hIepJstTu4tZ0M
+                    detectionId: 2b16873e-31de-4e84-9a5c-6e5eb0020536_scratches_damage_detector_inspection_50
+                    rectangle:
+                      pointType: Relative
+                      width: 0.037700000000000004
+                      height: 0.0286
+                      top: 0.6617000000000001
+                      left: 0.31365
+                    damageType: BodyScratch
+                - partName: DoorRearRight
+                  module: Atlas
+                  isAutoEstimated: true
+                  cost: 90
+                  defectDescription: A small dent found on the rear right door, which may not affect the door's functionality but is visually noticeable.
+                  damages:
+                  - imageUrl: https://us.api.uveye.app/v1/image?key=rdS5zTMih1qo1XMMozH5
+                    detectionId: 2b16873e-31de-4e84-9a5c-6e5eb0020536_scratches_damage_detector_inspection_9
+                    rectangle:
+                      pointType: Relative
+                      width: 0.0819
+                      height: 0.0819
+                      top: 0.59055
+                      left: 0.6315500000000001
+                    damageType: BodyGlassesDent
+                - partName: FenderRearLeft
+                  module: Atlas
+                  isAutoEstimated: true
+                  cost: 105
+                  defectDescription: The rear left fender has small dents that are not deep and do not affect the structural integrity of the vehicle. These dents can be repaired with minor bodywork.
+                  damages:
+                  - imageUrl: https://us.api.uveye.app/v1/image?key=0KQw5xfzq8oZFA4XNN4b
+                    detectionId: 2b16873e-31de-4e84-9a5c-6e5eb0020536_scratches_damage_detector_inspection_5
+                    rectangle:
+                      pointType: Relative
+                      width: 0.037700000000000004
+                      height: 0.0273
+                      top: 0.57285
+                      left: 0.33964999999999995
+                    damageType: BodyGlassesDent
+                  - imageUrl: https://us.api.uveye.app/v1/image?key=cMmZnll44vN2IceKb31O
+                    detectionId: 2b16873e-31de-4e84-9a5c-6e5eb0020536_scratches_damage_detector_inspection_4
+                    rectangle:
+                      pointType: Relative
+                      width: 0.0325
+                      height: 0.0234
+                      top: 0.5852999999999999
+                      left: 0.35825
+                    damageType: BodyShallowDent
+                - partName: LeftFrontTire
+                  module: Artemis
+                  isAutoEstimated: true
+                  cost: 275
+                  defectDescription: Wheel damage detected. Replacement or repair required.
+                  damages:
+                  - imageUrl: https://us.api.uveye.app/v1/image?key=A6E8uXtUnhZ4WBPT65a3
+                    detectionId: g75qd975f7n0|RimDamageCosmetic
+                    rectangle:
+                      pointType: Relative
+                      top: 0.676
+                      left: 0.547
+                      width: 0.071
+                      height: 0.022
+                    damageType: TireCosmeticRimDamage
+                - partName: Trunk
+                  module: Atlas
+                  isAutoEstimated: true
+                  cost: 222.5
+                  defectDescription: The trunk has moderate sun damage, which may lead to paint deterioration and potential rusting if not addressed.
+                  damages:
+                  - imageUrl: https://us.api.uveye.app/v1/image?key=Bcw71US7f1kV5XrGJu8g
+                    detectionId: 2b16873e-31de-4e84-9a5c-6e5eb0020536_scratches_damage_detector_inspection_10
+                    rectangle:
+                      pointType: Relative
+                      width: 0.1898
+                      height: 0.16640000000000002
+                      top: 0.2788
+                      left: 0.8311
+                    damageType: BodySunDamage
+                totalReconditioningCost: 790
+                offerPrice: 11400
+        '400':
+          description: 'Bad Request - `Request failed`, or `Missing search criteria`: one of inspectionId, licensePlate, vin or uniqueId must be provided.'
+        '401':
+          description: Unauthorized - `Invalid API key` or `API key is disabled`. Refresh the key in the UVeye Back Office and resend it in the `uveye-api-key` header.
+        '404':
+          description: Not Found - no inspection or active quote found for the given identifier.
+        '405':
+          description: Method Not Allowed - `unknown method, please use POST` - the endpoint only accepts POST.
+components:
+  schemas:
+    QuoteRequest:
+      type: object
+      description: Exactly one of inspectionId, licensePlate, vin or uniqueId must be supplied.
+      properties:
+        inspectionId:
+          type: string
+          description: A unique id of the inspection provided by the UVeye system; found in the scan page URL.
+        vin:
+          type: string
+          description: The vehicle VIN provided by the manufacturer; found under vehicle info on the inspection page.
+        licensePlate:
+          type: string
+          description: License plate of the vehicle; found under vehicle info on the inspection page.
+        uniqueId:
+          type: string
+          description: The barcode of the vehicle (when given); found on the scan page.
+        includeImages:
+          type: boolean
+          description: Include damage image URLs in the response.
+      anyOf:
+      - required:
+        - inspectionId
+      - required:
+        - vin
+      - required:
+        - licensePlate
+      - required:
+        - uniqueId
+  securitySchemes:
+    uveyeApiKey:
+      type: apiKey
+      in: header
+      name: uveye-api-key
+      description: Global API key generated in the Global Keys tab of the UVeye Back Office.
+    merchandiseBearer:
+      type: http
+      scheme: bearer
+      description: 'Merchandise API key issued at onboarding, sent as `Authorization: Bearer <merchandise API key>`. Distinct from `uveye-api-key`.'
+externalDocs:
+  description: UVeye Public API v1 documentation (Postman)
+  url: https://api.v1.uveye.dev/
