@@ -2,6 +2,20 @@
   "repo": "uveye",
   "feeds": [
     {
+      "source": "https://uveye.com/customer-support/feed/",
+      "feed_url": "https://uveye.com/customer-support/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
+      "source": "https://uveye.com/category/blog/feed/",
+      "feed_url": "https://uveye.com/category/blog/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
       "source": "https://uveye.com/customer-support/",
       "feed_url": "https://uveye.com/customer-support/feed/",
       "title": "",
@@ -12,10 +26,10 @@
       "source": "https://uveye.com/blog/",
       "feed_url": "https://uveye.com/category/blog/feed/",
       "title": "",
-      "saved": 8,
+      "saved": 0,
       "method": "discovered"
     }
   ],
-  "post_count": 10,
-  "fetched": "2026-08-15T12:11:08Z"
+  "post_count": 11,
+  "fetched": "2026-08-22T20:20:02Z"
 }
