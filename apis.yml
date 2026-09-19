@@ -52,7 +52,7 @@ tags:
 - Vehicle Inspection
 - Artificial Intelligence
 - Computer-Vision
-- Dealerships
+- Dealership
 - Fleet Management
 - Auctions and Remarketing
 - Automotive Retail
@@ -99,6 +99,8 @@ apis:
   humanURL: https://api.v1.uveye.dev/
   baseURL: https://api.uveye.dev/v1
   tags:
+  - Inspection
+  tags_raw:
   - Inspections
   properties:
   - type: OpenAPI
