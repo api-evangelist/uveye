@@ -3,16 +3,7 @@ info:
   title: UVeye Public API v1 Merchandise API
   version: '1.2'
   summary: Third-party access to UVeye automated vehicle-inspection data.
-  description: 'Allows third-party access to UVeye''s vehicle inspection data. Inspections are produced by UVeye''s scanning systems and exposed through four modules: **Artemis** (tires), **Helios** (undercarriage), **Atlas** (exterior) and **Apollo** (interior). The API also carries the **Merchandise** surface, which accepts a dealer''s vehicle inventory and pushes rendered multi-angle imagery back over a webhook.
-
-
-    All data provided is confidential and may not be used in any way without explicit permission from UVeye.
-
-
-    Most endpoints authenticate with a `uveye-api-key` header, generated in the Global Keys tab of the UVeye Back Office. The Merchandise endpoints use a separate credential sent as `Authorization: Bearer <merchandise API key>`, issued at onboarding.
-
-
-    This document is DERIVED by API Evangelist from UVeye''s own published Postman collection (documentation version v1.2, 2026-07-06) at https://api.v1.uveye.dev/. It is not published by UVeye.'
+  description: Allows third-party access to UVeye's vehicle inspection data.
   contact:
     name: UVeye Customer Support
     url: https://uveye.com/customer-support/
@@ -138,7 +129,7 @@ webhooks:
       description: 'When a VIN''s merchandise images are ready, UVeye POSTs to your configured webhook URL.
 
 
-        `Authorization: Bearer <customer-bearer-token>` carries the token UVeye was given at onboarding - match it to authenticate UVeye. `X-UVeye-Signature` is an HS256 JWT binding the body (`body_sha256`); verify it for tamper detection, and it carries a `delivery_id` idempotency key (optional).
+        `Authorization: Bearer ` carries the token UVeye was given at onboarding - match it to authenticate UVeye. `X-UVeye-Signature` is an HS256 JWT binding the body (`body_sha256`); verify it for tamper detection, and it carries a `delivery_id` idempotency key (optional).
 
 
         Acknowledge with 2xx. A non-2xx triggers retry - up to 5 retries / 6 attempts, same `delivery_id`.
@@ -190,16 +181,6 @@ webhooks:
           description: Acknowledged. A non-2xx response triggers retry (up to 5 retries / 6 attempts, same delivery_id).
 components:
   schemas:
-    MerchandiseAccepted:
-      type: object
-      properties:
-        received:
-          type: boolean
-        requestId:
-          type: string
-          description: Keep this for support - the batch is processed asynchronously.
-        count:
-          type: integer
     MerchandiseVehicle:
       type: object
       required:
@@ -273,6 +254,16 @@ components:
         stockInDate:
           type: string
           description: UI metadata only. YYYY-MM-DD.
+    MerchandiseAccepted:
+      type: object
+      properties:
+        received:
+          type: boolean
+        requestId:
+          type: string
+          description: Keep this for support - the batch is processed asynchronously.
+        count:
+          type: integer
   securitySchemes:
     uveyeApiKey:
       type: apiKey

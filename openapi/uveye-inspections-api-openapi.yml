@@ -3,16 +3,7 @@ info:
   title: UVeye Public API v1 Inspections API
   version: '1.2'
   summary: Third-party access to UVeye automated vehicle-inspection data.
-  description: 'Allows third-party access to UVeye''s vehicle inspection data. Inspections are produced by UVeye''s scanning systems and exposed through four modules: **Artemis** (tires), **Helios** (undercarriage), **Atlas** (exterior) and **Apollo** (interior). The API also carries the **Merchandise** surface, which accepts a dealer''s vehicle inventory and pushes rendered multi-angle imagery back over a webhook.
-
-
-    All data provided is confidential and may not be used in any way without explicit permission from UVeye.
-
-
-    Most endpoints authenticate with a `uveye-api-key` header, generated in the Global Keys tab of the UVeye Back Office. The Merchandise endpoints use a separate credential sent as `Authorization: Bearer <merchandise API key>`, issued at onboarding.
-
-
-    This document is DERIVED by API Evangelist from UVeye''s own published Postman collection (documentation version v1.2, 2026-07-06) at https://api.v1.uveye.dev/. It is not published by UVeye.'
+  description: Allows third-party access to UVeye's vehicle inspection data.
   contact:
     name: UVeye Customer Support
     url: https://uveye.com/customer-support/
@@ -231,39 +222,6 @@ paths:
           description: Method Not Allowed - `unknown method, please use POST` - the endpoint only accepts POST.
 components:
   schemas:
-    InspectionLookup:
-      type: object
-      description: Exactly one of inspectionId, vin, licensePlate or uniqueId must be supplied.
-      properties:
-        inspectionId:
-          type: string
-          description: A unique id of the inspection provided by the UVeye system; found in the scan page URL.
-        vin:
-          type: string
-          description: The vehicle VIN provided by the manufacturer; found under vehicle info on the inspection page.
-        licensePlate:
-          type: string
-          description: License plate of the vehicle; found under vehicle info on the inspection page.
-        uniqueId:
-          type: string
-          description: The barcode of the vehicle (when given); found on the scan page.
-        alertsOnly:
-          type: boolean
-          default: false
-          description: When true the response returns only alert detections and hides warning detections.
-        showTreadPolygons:
-          type: boolean
-          default: false
-          description: When true, tread polygon coordinates are included.
-      anyOf:
-      - required:
-        - inspectionId
-      - required:
-        - vin
-      - required:
-        - licensePlate
-      - required:
-        - uniqueId
     LatestInspectionsQuery:
       type: object
       description: One location filter (siteId, siteGroupId or vin) plus one result-window filter (amountOfDaysForSearch, amountOfHoursForSearch or amountOfInspections).
@@ -469,6 +427,39 @@ components:
         merchandiseVehicleData:
           type: object
           description: Resolved vehicle data (inventory-first); present only once resolved.
+    InspectionLookup:
+      type: object
+      description: Exactly one of inspectionId, vin, licensePlate or uniqueId must be supplied.
+      properties:
+        inspectionId:
+          type: string
+          description: A unique id of the inspection provided by the UVeye system; found in the scan page URL.
+        vin:
+          type: string
+          description: The vehicle VIN provided by the manufacturer; found under vehicle info on the inspection page.
+        licensePlate:
+          type: string
+          description: License plate of the vehicle; found under vehicle info on the inspection page.
+        uniqueId:
+          type: string
+          description: The barcode of the vehicle (when given); found on the scan page.
+        alertsOnly:
+          type: boolean
+          default: false
+          description: When true the response returns only alert detections and hides warning detections.
+        showTreadPolygons:
+          type: boolean
+          default: false
+          description: When true, tread polygon coordinates are included.
+      anyOf:
+      - required:
+        - inspectionId
+      - required:
+        - vin
+      - required:
+        - licensePlate
+      - required:
+        - uniqueId
   securitySchemes:
     uveyeApiKey:
       type: apiKey

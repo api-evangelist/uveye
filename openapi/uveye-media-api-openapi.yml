@@ -3,16 +3,7 @@ info:
   title: UVeye Public API v1 Media API
   version: '1.2'
   summary: Third-party access to UVeye automated vehicle-inspection data.
-  description: 'Allows third-party access to UVeye''s vehicle inspection data. Inspections are produced by UVeye''s scanning systems and exposed through four modules: **Artemis** (tires), **Helios** (undercarriage), **Atlas** (exterior) and **Apollo** (interior). The API also carries the **Merchandise** surface, which accepts a dealer''s vehicle inventory and pushes rendered multi-angle imagery back over a webhook.
-
-
-    All data provided is confidential and may not be used in any way without explicit permission from UVeye.
-
-
-    Most endpoints authenticate with a `uveye-api-key` header, generated in the Global Keys tab of the UVeye Back Office. The Merchandise endpoints use a separate credential sent as `Authorization: Bearer <merchandise API key>`, issued at onboarding.
-
-
-    This document is DERIVED by API Evangelist from UVeye''s own published Postman collection (documentation version v1.2, 2026-07-06) at https://api.v1.uveye.dev/. It is not published by UVeye.'
+  description: Allows third-party access to UVeye's vehicle inspection data.
   contact:
     name: UVeye Customer Support
     url: https://uveye.com/customer-support/

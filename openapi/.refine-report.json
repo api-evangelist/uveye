@@ -1,11 +1,7 @@
 {
   "provider": "uveye",
   "sources": [
-    "uveye-appraisal-api-openapi.yml",
-    "uveye-inspections-api-openapi.yml",
-    "uveye-media-api-openapi.yml",
-    "uveye-merchandise-api-openapi.yml",
-    "uveye-public-links-api-openapi.yml"
+    "_original/uveye-public-api-v1-openapi.yml"
   ],
   "outputs": [
     "uveye-appraisal-api-openapi.yml",
@@ -18,12 +14,15 @@
   "errors": [],
   "warnings": [],
   "notes": [
-    "uveye-appraisal-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "uveye-inspections-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "uveye-media-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "uveye-merchandise-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "uveye-public-links-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "uveye-public-api-v1-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "uveye-appraisal-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "uveye-inspections-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "uveye-media-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "uveye-merchandise-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "uveye-public-links-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
