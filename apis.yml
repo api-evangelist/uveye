@@ -51,7 +51,7 @@ tags:
 - Automotive
 - Vehicle Inspection
 - Artificial Intelligence
-- Computer-Vision
+- Computer Vision
 - Dealership
 - Fleet Management
 - Auctions and Remarketing
@@ -69,6 +69,7 @@ tags_raw:
 - Automotive Retail
 - Inspection Data
 - Company
+- Computer-Vision
 apis:
 - aid: uveye:uveye-appraisal-api
   name: UVeye Appraisal API

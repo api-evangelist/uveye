@@ -181,6 +181,16 @@ webhooks:
           description: Acknowledged. A non-2xx response triggers retry (up to 5 retries / 6 attempts, same delivery_id).
 components:
   schemas:
+    MerchandiseAccepted:
+      type: object
+      properties:
+        received:
+          type: boolean
+        requestId:
+          type: string
+          description: Keep this for support - the batch is processed asynchronously.
+        count:
+          type: integer
     MerchandiseVehicle:
       type: object
       required:
@@ -254,16 +264,6 @@ components:
         stockInDate:
           type: string
           description: UI metadata only. YYYY-MM-DD.
-    MerchandiseAccepted:
-      type: object
-      properties:
-        received:
-          type: boolean
-        requestId:
-          type: string
-          description: Keep this for support - the batch is processed asynchronously.
-        count:
-          type: integer
   securitySchemes:
     uveyeApiKey:
       type: apiKey
