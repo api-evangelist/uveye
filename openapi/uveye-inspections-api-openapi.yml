@@ -222,6 +222,95 @@ paths:
           description: Method Not Allowed - `unknown method, please use POST` - the endpoint only accepts POST.
 components:
   schemas:
+    LatestInspectionsQuery:
+      type: object
+      description: One location filter (siteId, siteGroupId or vin) plus one result-window filter (amountOfDaysForSearch, amountOfHoursForSearch or amountOfInspections).
+      properties:
+        siteId:
+          type: string
+          description: The id of the site to search inspections for.
+        siteGroupId:
+          type: string
+          description: The id of the site group to search inspections for (also known as BAC for GM dealers).
+        vin:
+          type: string
+          description: Search the latest inspections for a specific vehicle by VIN.
+        amountOfDaysForSearch:
+          type: integer
+          description: Return inspections from the last X days.
+        amountOfHoursForSearch:
+          type: integer
+          description: Return inspections from the last X hours.
+        amountOfInspections:
+          type: integer
+          description: Return the most recent X inspections.
+      anyOf:
+      - required:
+        - siteId
+      - required:
+        - siteGroupId
+      - required:
+        - vin
+    InspectionSummary:
+      type: object
+      properties:
+        inspectionId:
+          type: string
+          description: Unique id of the inspection - use it with the Inspection Details request.
+        siteId:
+          type: string
+          description: Id of the site where the inspection took place.
+        organizationId:
+          type: string
+          description: Id of the organization the site belongs to.
+        inspectedAt:
+          type: string
+          description: Date and time the inspection was scanned.
+        vin:
+          type: string
+          description: Vehicle VIN.
+        year:
+          type: string
+          description: Vehicle model year; may be empty when unavailable.
+        model:
+          type: string
+          description: Vehicle model.
+        make:
+          type: string
+          description: Vehicle make.
+        licensePlate:
+          type: string
+          description: Vehicle license plate.
+        licensePlateUsStateAbbreviation:
+          type: string
+          description: US state abbreviation of the license plate.
+        merchandiseVehicleData:
+          type: object
+          description: Resolved vehicle data (inventory-first); present only once resolved.
+        hasHelios:
+          type: boolean
+          description: True if the inspection includes an undercarriage (Helios) scan.
+        hasArtemis:
+          type: boolean
+          description: True if the inspection includes a tire (Artemis) scan.
+        hasAtlas:
+          type: boolean
+          description: True if the inspection includes an exterior (Atlas) scan.
+        isHeliosModuleInvalid:
+          type: boolean
+          description: True if the undercarriage module is invalid.
+        isArtemisModuleInvalid:
+          type: boolean
+          description: True if the tire module is invalid.
+        isAtlasModuleInvalid:
+          type: boolean
+          description: True if the exterior module is invalid.
+        isScanInvalid:
+          type: boolean
+          description: True if any of the inspection modules is invalid.
+        overviewImage:
+          type: string
+          description: URL of the inspection overview image.
     Inspection:
       type: object
       description: A single vehicle inspection with its per-module results.
@@ -338,95 +427,6 @@ components:
         merchandiseVehicleData:
           type: object
           description: Resolved vehicle data (inventory-first); present only once resolved.
-    LatestInspectionsQuery:
-      type: object
-      description: One location filter (siteId, siteGroupId or vin) plus one result-window filter (amountOfDaysForSearch, amountOfHoursForSearch or amountOfInspections).
-      properties:
-        siteId:
-          type: string
-          description: The id of the site to search inspections for.
-        siteGroupId:
-          type: string
-          description: The id of the site group to search inspections for (also known as BAC for GM dealers).
-        vin:
-          type: string
-          description: Search the latest inspections for a specific vehicle by VIN.
-        amountOfDaysForSearch:
-          type: integer
-          description: Return inspections from the last X days.
-        amountOfHoursForSearch:
-          type: integer
-          description: Return inspections from the last X hours.
-        amountOfInspections:
-          type: integer
-          description: Return the most recent X inspections.
-      anyOf:
-      - required:
-        - siteId
-      - required:
-        - siteGroupId
-      - required:
-        - vin
-    InspectionSummary:
-      type: object
-      properties:
-        inspectionId:
-          type: string
-          description: Unique id of the inspection - use it with the Inspection Details request.
-        siteId:
-          type: string
-          description: Id of the site where the inspection took place.
-        organizationId:
-          type: string
-          description: Id of the organization the site belongs to.
-        inspectedAt:
-          type: string
-          description: Date and time the inspection was scanned.
-        vin:
-          type: string
-          description: Vehicle VIN.
-        year:
-          type: string
-          description: Vehicle model year; may be empty when unavailable.
-        model:
-          type: string
-          description: Vehicle model.
-        make:
-          type: string
-          description: Vehicle make.
-        licensePlate:
-          type: string
-          description: Vehicle license plate.
-        licensePlateUsStateAbbreviation:
-          type: string
-          description: US state abbreviation of the license plate.
-        merchandiseVehicleData:
-          type: object
-          description: Resolved vehicle data (inventory-first); present only once resolved.
-        hasHelios:
-          type: boolean
-          description: True if the inspection includes an undercarriage (Helios) scan.
-        hasArtemis:
-          type: boolean
-          description: True if the inspection includes a tire (Artemis) scan.
-        hasAtlas:
-          type: boolean
-          description: True if the inspection includes an exterior (Atlas) scan.
-        isHeliosModuleInvalid:
-          type: boolean
-          description: True if the undercarriage module is invalid.
-        isArtemisModuleInvalid:
-          type: boolean
-          description: True if the tire module is invalid.
-        isAtlasModuleInvalid:
-          type: boolean
-          description: True if the exterior module is invalid.
-        isScanInvalid:
-          type: boolean
-          description: True if any of the inspection modules is invalid.
-        overviewImage:
-          type: string
-          description: URL of the inspection overview image.
     InspectionLookup:
       type: object
       description: Exactly one of inspectionId, vin, licensePlate or uniqueId must be supplied.
